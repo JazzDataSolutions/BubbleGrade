@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Senior Architect Roadmap &mdash; BubbleGrade 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b95f6255" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Clean Architecture Implementation" href="architecture/clean-architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BubbleGrade
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Architecture</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture/clean-architecture.html">Clean Architecture Implementation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Senior Architect Roadmap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#current-state-assessment">Current State Assessment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strategic-implementation-phases">Strategic Implementation Phases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#phase-1-core-infrastructure-q1-q2-2024">Phase 1: Core Infrastructure (Q1-Q2 2024)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-2-scalability-performance-q2-q3-2024">Phase 2: Scalability &amp; Performance (Q2-Q3 2024)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-3-devops-platform-q3-q4-2024">Phase 3: DevOps &amp; Platform (Q3-Q4 2024)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-4-ai-ml-integration-q4-2024">Phase 4: AI/ML Integration (Q4 2024+)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-priority-matrix">Implementation Priority Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resource-planning">Resource Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#success-metrics">Success Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#risk-mitigation">Risk Mitigation</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BubbleGrade</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Senior Architect Roadmap</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/roadmap.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="senior-architect-roadmap">
+<h1>Senior Architect Roadmap<a class="headerlink" href="#senior-architect-roadmap" title="Link to this heading"></a></h1>
+<p>As a <strong>Senior Solutions Architect</strong>, this strategic roadmap outlines the evolution path for BubbleGrade from its current Clean Architecture foundation to enterprise-grade scalability.</p>
+<section id="current-state-assessment">
+<h2>Current State Assessment<a class="headerlink" href="#current-state-assessment" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>✅ <strong>Completed Foundations</strong></dt><dd><ul class="simple">
+<li><p>Clean Architecture with SOLID principles</p></li>
+<li><p>Domain-driven design implementation</p></li>
+<li><p>Microservices containerization</p></li>
+<li><p>Basic OMR processing pipeline</p></li>
+<li><p>WebSocket real-time communication</p></li>
+<li><p>PostgreSQL data persistence</p></li>
+</ul>
+</dd>
+<dt>🚧 <strong>Technical Debt &amp; Gaps</strong></dt><dd><ul class="simple">
+<li><p>Mock OMR service (needs real OpenCV integration)</p></li>
+<li><p>No authentication/authorization</p></li>
+<li><p>Limited monitoring and observability</p></li>
+<li><p>No automated testing framework</p></li>
+<li><p>Manual deployment processes</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="strategic-implementation-phases">
+<h2>Strategic Implementation Phases<a class="headerlink" href="#strategic-implementation-phases" title="Link to this heading"></a></h2>
+<section id="phase-1-core-infrastructure-q1-q2-2024">
+<h3>Phase 1: Core Infrastructure (Q1-Q2 2024)<a class="headerlink" href="#phase-1-core-infrastructure-q1-q2-2024" title="Link to this heading"></a></h3>
+<p>🔐 <strong>Security &amp; Authentication</strong></p>
+<blockquote>
+<div><p><strong>Priority: CRITICAL</strong></p>
+<ul class="simple">
+<li><p><strong>JWT Authentication</strong> with role-based access control (RBAC)</p>
+<ul>
+<li><p>Implementation: FastAPI-Users or custom JWT middleware</p></li>
+<li><p>Roles: Admin, Teacher, Student, Grader</p></li>
+<li><p>Scope: All API endpoints protection</p></li>
+</ul>
+</li>
+<li><p><strong>OAuth 2.0 / OIDC</strong> integration for enterprise SSO</p>
+<ul>
+<li><p>Integration with Google Workspace, Microsoft 365, Okta</p></li>
+<li><p>SAML 2.0 support for enterprise identity providers</p></li>
+<li><p>Multi-factor authentication (MFA) support</p></li>
+</ul>
+</li>
+<li><p><strong>API Gateway</strong> with rate limiting and throttling</p>
+<ul>
+<li><p>Tool: Kong, Envoy, or AWS API Gateway</p></li>
+<li><p>Rate limits: 1000 req/min per user, 10000 req/min per org</p></li>
+<li><p>DDoS protection and request filtering</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>📊 <strong>Observability &amp; Monitoring</strong></p>
+<blockquote>
+<div><p><strong>Priority: HIGH</strong></p>
+<ul class="simple">
+<li><p><strong>Distributed Tracing</strong> with OpenTelemetry/Jaeger</p>
+<ul>
+<li><p>End-to-end request tracking across microservices</p></li>
+<li><p>Performance bottleneck identification</p></li>
+<li><p>Error correlation and root cause analysis</p></li>
+</ul>
+</li>
+<li><p><strong>Metrics Collection</strong> with Prometheus + Grafana</p>
+<ul>
+<li><p>Business metrics: Scan processing time, accuracy rates</p></li>
+<li><p>System metrics: CPU, memory, disk, network</p></li>
+<li><p>Custom dashboards for different stakeholders</p></li>
+</ul>
+</li>
+<li><p><strong>Centralized Logging</strong> with ELK Stack or Fluentd</p>
+<ul>
+<li><p>Structured logging with correlation IDs</p></li>
+<li><p>Log aggregation from all services</p></li>
+<li><p>Alerting on error patterns</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>🗄️ <strong>Data Layer Enhancement</strong></p>
+<blockquote>
+<div><p><strong>Priority: MEDIUM</strong></p>
+<ul class="simple">
+<li><p><strong>Database Migrations</strong> with Alembic versioning</p>
+<ul>
+<li><p>Schema evolution management</p></li>
+<li><p>Rollback capabilities</p></li>
+<li><p>Environment-specific migrations</p></li>
+</ul>
+</li>
+<li><p><strong>Connection Pooling</strong> with PgBouncer</p>
+<ul>
+<li><p>Optimized database connections</p></li>
+<li><p>Connection limits and timeouts</p></li>
+<li><p>Transaction-level pooling</p></li>
+</ul>
+</li>
+<li><p><strong>Backup &amp; Recovery</strong> strategies</p>
+<ul>
+<li><p>Automated daily backups</p></li>
+<li><p>Point-in-time recovery capability</p></li>
+<li><p>Cross-region backup replication</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="phase-2-scalability-performance-q2-q3-2024">
+<h3>Phase 2: Scalability &amp; Performance (Q2-Q3 2024)<a class="headerlink" href="#phase-2-scalability-performance-q2-q3-2024" title="Link to this heading"></a></h3>
+<p>⚡ <strong>High Availability</strong></p>
+<blockquote>
+<div><p><strong>Priority: HIGH</strong></p>
+<ul class="simple">
+<li><p><strong>Load Balancing</strong> with NGINX or HAProxy</p>
+<ul>
+<li><p>Round-robin and least-connections algorithms</p></li>
+<li><p>Health checks and automatic failover</p></li>
+<li><p>SSL termination and compression</p></li>
+</ul>
+</li>
+<li><p><strong>Auto-scaling</strong> with Kubernetes HPA</p>
+<ul>
+<li><p>CPU and memory-based scaling</p></li>
+<li><p>Custom metrics scaling (queue depth, response time)</p></li>
+<li><p>Predictive scaling based on historical patterns</p></li>
+</ul>
+</li>
+<li><p><strong>Caching Layer</strong> with Redis/Memcached</p>
+<ul>
+<li><p>Session storage and API response caching</p></li>
+<li><p>Distributed caching for scan results</p></li>
+<li><p>Cache invalidation strategies</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>🧪 <strong>Advanced OMR Processing</strong></p>
+<blockquote>
+<div><p><strong>Priority: CRITICAL</strong></p>
+<ul class="simple">
+<li><p><strong>OpenCV Integration</strong> for real bubble detection</p>
+<ul>
+<li><p>Hough Circle Transform implementation</p></li>
+<li><p>Adaptive thresholding algorithms</p></li>
+<li><p>Multi-scale bubble detection</p></li>
+</ul>
+</li>
+<li><p><strong>ML Model Pipeline</strong> for improved accuracy</p>
+<ul>
+<li><p>CNN models for bubble classification</p></li>
+<li><p>Transfer learning from educational datasets</p></li>
+<li><p>Model versioning and A/B testing</p></li>
+</ul>
+</li>
+<li><p><strong>GPU Acceleration</strong> for batch processing</p>
+<ul>
+<li><p>CUDA-enabled OpenCV operations</p></li>
+<li><p>Batch processing optimization</p></li>
+<li><p>Queue-based job processing</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>📋 <strong>Enterprise Features</strong></p>
+<blockquote>
+<div><p><strong>Priority: MEDIUM</strong></p>
+<ul class="simple">
+<li><p><strong>Multi-tenancy</strong> support with tenant isolation</p>
+<ul>
+<li><p>Data isolation per organization</p></li>
+<li><p>Tenant-specific configurations</p></li>
+<li><p>Billing and usage tracking</p></li>
+</ul>
+</li>
+<li><p><strong>Exam Templates</strong> management system</p>
+<ul>
+<li><p>Configurable answer sheet layouts</p></li>
+<li><p>Custom scoring algorithms</p></li>
+<li><p>Template versioning and validation</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="phase-3-devops-platform-q3-q4-2024">
+<h3>Phase 3: DevOps &amp; Platform (Q3-Q4 2024)<a class="headerlink" href="#phase-3-devops-platform-q3-q4-2024" title="Link to this heading"></a></h3>
+<p>🔄 <strong>CI/CD Pipeline</strong></p>
+<blockquote>
+<div><p><strong>Priority: HIGH</strong></p>
+<ul class="simple">
+<li><p><strong>GitOps</strong> with ArgoCD or Flux</p>
+<ul>
+<li><p>Declarative infrastructure management</p></li>
+<li><p>Automated deployments from Git</p></li>
+<li><p>Environment promotion workflows</p></li>
+</ul>
+</li>
+<li><p><strong>Automated Testing</strong> (unit, integration, e2e)</p>
+<ul>
+<li><p>80%+ code coverage requirement</p></li>
+<li><p>Contract testing between services</p></li>
+<li><p>Performance regression testing</p></li>
+</ul>
+</li>
+<li><p><strong>Security Scanning</strong> with Trivy/Snyk</p>
+<ul>
+<li><p>Container vulnerability scanning</p></li>
+<li><p>Dependency vulnerability checks</p></li>
+<li><p>SAST/DAST integration</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>☁️ <strong>Cloud Native</strong></p>
+<blockquote>
+<div><p><strong>Priority: MEDIUM</strong></p>
+<ul class="simple">
+<li><p><strong>Kubernetes</strong> deployment with Helm charts</p>
+<ul>
+<li><p>Multi-environment deployments</p></li>
+<li><p>Resource quotas and limits</p></li>
+<li><p>Network policies and security contexts</p></li>
+</ul>
+</li>
+<li><p><strong>Service Mesh</strong> with Istio or Linkerd</p>
+<ul>
+<li><p>mTLS between services</p></li>
+<li><p>Traffic management and circuit breaking</p></li>
+<li><p>Observability and security policies</p></li>
+</ul>
+</li>
+<li><p><strong>Infrastructure as Code</strong> with Terraform</p>
+<ul>
+<li><p>Cloud resource provisioning</p></li>
+<li><p>Environment consistency</p></li>
+<li><p>Disaster recovery automation</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="phase-4-ai-ml-integration-q4-2024">
+<h3>Phase 4: AI/ML Integration (Q4 2024+)<a class="headerlink" href="#phase-4-ai-ml-integration-q4-2024" title="Link to this heading"></a></h3>
+<p>🤖 <strong>Machine Learning</strong></p>
+<blockquote>
+<div><p><strong>Priority: LOW (Innovation)</strong></p>
+<ul class="simple">
+<li><p><strong>Computer Vision Models</strong> for enhanced bubble detection</p>
+<ul>
+<li><p>Custom CNN architectures</p></li>
+<li><p>Transfer learning from educational datasets</p></li>
+<li><p>Real-time inference optimization</p></li>
+</ul>
+</li>
+<li><p><strong>OCR Integration</strong> for handwritten text recognition</p>
+<ul>
+<li><p>Handwriting recognition for student names/IDs</p></li>
+<li><p>Mathematical expression recognition</p></li>
+<li><p>Multi-language support</p></li>
+</ul>
+</li>
+<li><p><strong>MLOps Pipeline</strong> for model deployment</p>
+<ul>
+<li><p>Model versioning with MLflow</p></li>
+<li><p>A/B testing framework</p></li>
+<li><p>Model performance monitoring</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>📈 <strong>Advanced Features</strong></p>
+<blockquote>
+<div><p><strong>Priority: LOW</strong></p>
+<ul class="simple">
+<li><p><strong>Analytics Platform</strong> for educational insights</p>
+<ul>
+<li><p>Learning analytics dashboard</p></li>
+<li><p>Performance trend analysis</p></li>
+<li><p>Predictive student outcomes</p></li>
+</ul>
+</li>
+<li><p><strong>Mobile Applications</strong> with React Native</p>
+<ul>
+<li><p>iOS and Android apps</p></li>
+<li><p>Offline scanning capability</p></li>
+<li><p>Push notifications for results</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="implementation-priority-matrix">
+<h2>Implementation Priority Matrix<a class="headerlink" href="#implementation-priority-matrix" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Feature Prioritization</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Priority</p></th>
+<th class="head"><p>Component</p></th>
+<th class="head"><p>Impact</p></th>
+<th class="head"><p>Effort</p></th>
+<th class="head"><p>Dependencies</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CRITICAL</strong></p></td>
+<td><p>Authentication &amp; Authorization</p></td>
+<td><p>Security</p></td>
+<td><p>Medium</p></td>
+<td><p>Identity Provider</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CRITICAL</strong></p></td>
+<td><p>Real OMR Processing</p></td>
+<td><p>Core Feature</p></td>
+<td><p>High</p></td>
+<td><p>OpenCV, ML Models</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>HIGH</strong></p></td>
+<td><p>Monitoring &amp; Observability</p></td>
+<td><p>Operations</p></td>
+<td><p>Medium</p></td>
+<td><p>Infrastructure</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>HIGH</strong></p></td>
+<td><p>CI/CD Pipeline</p></td>
+<td><p>DevOps</p></td>
+<td><p>Medium</p></td>
+<td><p>Git, Container Registry</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>HIGH</strong></p></td>
+<td><p>Database Optimization</p></td>
+<td><p>Performance</p></td>
+<td><p>Low</p></td>
+<td><p>PostgreSQL</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>MEDIUM</strong></p></td>
+<td><p>Load Balancing &amp; Scaling</p></td>
+<td><p>Performance</p></td>
+<td><p>Medium</p></td>
+<td><p>Kubernetes</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>MEDIUM</strong></p></td>
+<td><p>Advanced Caching</p></td>
+<td><p>Performance</p></td>
+<td><p>Low</p></td>
+<td><p>Redis</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>MEDIUM</strong></p></td>
+<td><p>Multi-tenancy</p></td>
+<td><p>Enterprise</p></td>
+<td><p>High</p></td>
+<td><p>Database Schema Changes</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>LOW</strong></p></td>
+<td><p>ML/AI Integration</p></td>
+<td><p>Innovation</p></td>
+<td><p>High</p></td>
+<td><p>Data Science Team</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>LOW</strong></p></td>
+<td><p>Mobile Applications</p></td>
+<td><p>UX</p></td>
+<td><p>High</p></td>
+<td><p>Mobile Development Team</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="resource-planning">
+<h2>Resource Planning<a class="headerlink" href="#resource-planning" title="Link to this heading"></a></h2>
+<p><strong>Team Structure Recommendations:</strong></p>
+<ul class="simple">
+<li><p><strong>Backend Team</strong> (2-3 developers): API development, database optimization</p></li>
+<li><p><strong>Frontend Team</strong> (1-2 developers): React UI/UX improvements</p></li>
+<li><p><strong>DevOps Engineer</strong> (1): Infrastructure, CI/CD, monitoring</p></li>
+<li><p><strong>ML Engineer</strong> (1): Computer vision, model development</p></li>
+<li><p><strong>QA Engineer</strong> (1): Testing automation, quality assurance</p></li>
+</ul>
+<p><strong>Infrastructure Costs (Monthly Estimates):</strong></p>
+<ul class="simple">
+<li><p><strong>Development Environment</strong>: $500-1000</p></li>
+<li><p><strong>Staging Environment</strong>: $1000-2000</p></li>
+<li><p><strong>Production Environment</strong>: $3000-8000</p></li>
+<li><p><strong>Monitoring &amp; Logging</strong>: $500-1500</p></li>
+<li><p><strong>Total Monthly</strong>: $5000-12500</p></li>
+</ul>
+</section>
+<section id="success-metrics">
+<h2>Success Metrics<a class="headerlink" href="#success-metrics" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Technical KPIs:</strong></dt><dd><ul class="simple">
+<li><p>99.9% uptime SLA</p></li>
+<li><p>&lt;2 second scan processing time</p></li>
+<li><p>95%+ bubble detection accuracy</p></li>
+<li><p>&lt;100ms API response time (p95)</p></li>
+</ul>
+</dd>
+<dt><strong>Business KPIs:</strong></dt><dd><ul class="simple">
+<li><p>10x processing throughput increase</p></li>
+<li><p>50% reduction in manual grading time</p></li>
+<li><p>25% improvement in grading accuracy</p></li>
+<li><p>90% customer satisfaction score</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="risk-mitigation">
+<h2>Risk Mitigation<a class="headerlink" href="#risk-mitigation" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>High-Risk Items:</strong></dt><dd><ul class="simple">
+<li><p>OpenCV integration complexity → Start with MVP implementation</p></li>
+<li><p>Performance bottlenecks → Implement comprehensive monitoring early</p></li>
+<li><p>Security vulnerabilities → Regular security audits and penetration testing</p></li>
+<li><p>Scalability limits → Load testing and capacity planning</p></li>
+</ul>
+</dd>
+<dt><strong>Contingency Plans:</strong></dt><dd><ul class="simple">
+<li><p>Rollback procedures for all deployments</p></li>
+<li><p>Circuit breakers for external dependencies</p></li>
+<li><p>Data backup and recovery procedures</p></li>
+<li><p>Alternative technology stack evaluations</p></li>
+</ul>
+</dd>
+</dl>
+<p>This roadmap provides a structured approach to evolving BubbleGrade into an enterprise-grade platform while maintaining the solid architectural foundation established through Clean Architecture principles.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="architecture/clean-architecture.html" class="btn btn-neutral float-left" title="Clean Architecture Implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, BubbleGrade Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
