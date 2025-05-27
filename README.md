@@ -1,122 +1,351 @@
+# 🫧 BubbleGrade – Advanced Microservices OMR System
 
-# BubbleGrade – Compose Microservices Edition
+**BubbleGrade** is a production-ready **Optical Mark Recognition (OMR)** system designed for automated grading of bubble sheets and multiple-choice exams. Built with modern microservices architecture, it combines the power of **OpenCV computer vision**, **real-time WebSocket communication**, and **beautiful React interfaces**.
 
-BubbleGrade now splits heavy image processing into a **Go microservice** and keeps the
-**React + TypeScript** frontend in its own container—yet everything still launches
-with a _single_ `docker compose up`.
-
----
-
-## 🏗️ Services
-
-| Service | Lang | Port | Description |
-|---------|------|------|-------------|
-| **frontend** | React 18 + Vite (TS) | 5173 | Drag‑and‑drop UI |
-| **api** | Python 3.11 (FastAPI) | 8080 | REST/WS orchestration + Excel |
-| **omr** | Go 1.22 + gocv | 8090 | CPU‑intensive bubble detection |
-| **db** | Postgres 16 | 5432 | Persistent storage |
-| **(opt) nginx** | — | 443 | TLS & reverse proxy |
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
+[![React](https://img.shields.io/badge/React-18-61dafb.svg)](https://reactjs.org)
+[![Go](https://img.shields.io/badge/Go-1.22-00add8.svg)](https://golang.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com)
 
 ---
 
-## 🖥️ Architecture
+## ✨ Features
+
+### 🎯 **Core Capabilities**
+- **Real-time Bubble Detection** using OpenCV and Hough Circle Transform
+- **Drag-and-Drop File Upload** with instant processing feedback
+- **Live Progress Updates** via WebSocket connections
+- **Professional Excel Export** with detailed results and formatting
+- **PostgreSQL Database** for persistent scan history
+- **RESTful API** with comprehensive endpoints
+
+### 🏗️ **Architecture**
+- **Microservices Design** with independent, scalable services
+- **Container-First** approach with Docker Compose orchestration
+- **Health Checks** and service dependency management
+- **Production-Ready** with proper logging, error handling, and monitoring
+
+### 🎨 **User Experience**
+- **Modern React Interface** with TypeScript and Vite
+- **Responsive Design** that works on desktop and mobile
+- **Real-time Status Updates** during scan processing
+- **Beautiful Gradient UI** with smooth animations
+
+---
+
+## 🏗️ System Architecture
 
 ```mermaid
-graph TD
-  Browser -->|HTTPS| Nginx[Nginx]
-  Nginx -->|/| Frontend[React SPA]
-  Nginx -->|/api| API[FastAPI]
-  Nginx -. ws .-> API
-  API -->|POST scan| OMR[Go OMR svc]
-  OMR --> API
-  API --> DB[(PostgreSQL)]
+graph TB
+    subgraph "Client Layer"
+        Browser[Web Browser]
+    end
+    
+    subgraph "Docker Network: bubblegrade"
+        Frontend[React Frontend<br/>:5173]
+        API[FastAPI Backend<br/>:8080]
+        OMR[Go OMR Service<br/>:8090]
+        DB[(PostgreSQL<br/>:5432)]
+    end
+    
+    Browser --> Frontend
+    Frontend --> API
+    API --> OMR
+    API --> DB
+    OMR --> API
+    
+    Frontend -.->|WebSocket| API
 ```
 
-All containers live in the same Docker network created by Compose.
+### 📊 **Service Details**
+
+| Service | Technology | Port | Purpose | Key Features |
+|---------|------------|------|---------|--------------|
+| **Frontend** | React 18 + Vite + TypeScript | 5173 | User Interface | Drag-drop, real-time updates, responsive |
+| **API** | FastAPI + SQLAlchemy + AsyncPG | 8080 | Backend Logic | REST endpoints, WebSocket, database ORM |
+| **OMR** | Go + OpenCV (gocv) | 8090 | Image Processing | Circle detection, bubble analysis, scoring |
+| **Database** | PostgreSQL 16 | 5432 | Data Persistence | Scan results, user data, audit logs |
 
 ---
 
-## 🔧 Quick Start
+## 🚀 Quick Start
 
+### Prerequisites
+- **Docker** and **Docker Compose** installed
+- At least **4GB RAM** available for containers
+- **Ports 5173, 8080, 8090, 5432** available
+
+### Launch the System
 ```bash
-git clone https://github.com/<org>/bubblegrade.git
+# Clone the repository
+git clone <repository-url>
 cd BubbleGrade
+
+# Start all services
 docker compose -f compose.micro.yml up --build
+
+# Access the application
 open http://localhost:5173
 ```
 
-_Note_: `compose.micro.yml` extends the default compose file with the `omr`
-and `frontend` services.
+### First Test
+1. Navigate to http://localhost:5173
+2. Drag and drop a bubble sheet image (JPG/PNG)
+3. Watch real-time processing status
+4. Download Excel results when complete
 
 ---
 
-## 📂 Repo Layout
+## 📂 Project Structure
 
 ```
 BubbleGrade/
-├─ docker-compose.yml
-├─ services/
-│  ├─ api/          # FastAPI (as before)
-│  ├─ omr/          # Go microservice
-│  └─ frontend/     # React+TS source
-└─ docs/
-    └─ architecture.md
+├── 📋 README.md                    # This file
+├── 🐳 compose.micro.yml             # Docker Compose configuration
+├── 🗄️ init.sql                     # Database initialization
+├── 📚 docs/                        # Comprehensive documentation
+│   ├── architecture.md             # System architecture details
+│   ├── api.md                      # API documentation
+│   ├── deployment.md               # Deployment guides
+│   └── development.md              # Development setup
+├── 🎨 services/frontend/           # React TypeScript frontend
+│   ├── src/App.tsx                 # Main application component
+│   ├── src/App.css                 # Styling and animations
+│   ├── Dockerfile                  # Multi-stage build
+│   ├── nginx.conf                  # Production web server config
+│   └── package.json               # Dependencies
+├── ⚡ services/api/                # FastAPI backend
+│   ├── app/main.py                 # Main application logic
+│   ├── requirements.txt            # Python dependencies
+│   └── Dockerfile                  # API container build
+└── 🔍 services/omr/               # Go OMR processing service
+    ├── main.go                     # OpenCV image processing
+    ├── go.mod                      # Go module definition
+    ├── go.sum                      # Dependency checksums
+    └── Dockerfile                  # Multi-stage Go build
 ```
 
 ---
 
-## 🚀 Development 
+## 🛠️ Development
 
-* **Frontend**  
-  ```bash
-  cd services/frontend
-  npm i
-  npm run dev            # localhost:5173
-  ```
+### Frontend Development
+```bash
+cd services/frontend
+npm install
+npm run dev          # Development server at localhost:5173
+npm run build        # Production build
+npm run preview      # Preview production build
+```
 
-* **Backend API**  
-  `make dev-api` – hot reload w/ uvicorn
+### Backend API Development
+```bash
+cd services/api
+pip install -r requirements.txt
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
+```
 
-* **OMR service**  
-  ```bash
-  cd services/omr
-  go test ./...
-  go run main.go         # standalone debug
-  ```
-
----
-
-## 🔄 Data Flow
-
-1. UI uploads a PDF/JPG → `POST /api/scans`.  
-2. API streams file to `/tmp` and issues `POST /grade` to OMR service.  
-3. OMR detects bubbles, returns answers + score.  
-4. API stores result, emits WebSocket event back to UI.  
-5. User clicks **Export** → API generates Excel and sends file.
+### OMR Service Development
+```bash
+cd services/omr
+go mod download
+go run main.go       # Standalone service
+go test ./...        # Run tests
+```
 
 ---
 
-## 📜 .env sample
+## 🔄 Processing Pipeline
 
-```dotenv
-# FastAPI
-SECRET_KEY=replace-me
+### 1. **File Upload**
+- User drags/drops image file to React interface
+- File validated (format, size) on client-side
+- FormData uploaded to `/api/scans` endpoint
+
+### 2. **Database Record Creation**
+- Unique scan ID generated (UUID)
+- Database record created with QUEUED status
+- Background task initiated for processing
+
+### 3. **Image Processing**
+- File sent to Go OMR service via HTTP
+- OpenCV processes image:
+  - Convert to grayscale
+  - Apply Gaussian blur
+  - Detect circles using Hough transform
+  - Analyze circle fill intensity
+  - Organize answers by row/column
+
+### 4. **Results & Scoring**
+- Detected answers compared to answer key
+- Score calculated as percentage
+- Results stored in database
+- WebSocket notification sent to frontend
+
+### 5. **Excel Export**
+- Professional spreadsheet generated with:
+  - Question-by-question breakdown
+  - Correct/incorrect indicators with colors
+  - Summary statistics
+  - Formatted headers and styling
+
+---
+
+## 📊 API Endpoints
+
+### Core Endpoints
+- `POST /api/scans` - Upload new scan
+- `GET /api/scans` - List all scans
+- `GET /api/scans/{id}` - Get specific scan
+- `GET /api/exports/{id}` - Download Excel report
+- `WebSocket /ws` - Real-time updates
+
+### Health & Monitoring
+- `GET /health` - API health check
+- `GET /omr/health` - OMR service health
+
+---
+
+## 🐳 Docker Configuration
+
+### Production Deployment
+```bash
+# Production with resource limits
+docker compose -f compose.micro.yml up -d
+
+# View logs
+docker compose -f compose.micro.yml logs -f
+
+# Scale OMR service for high load
+docker compose -f compose.micro.yml up -d --scale omr=3
+```
+
+### Development with Hot Reload
+```bash
+# Override for development
+docker compose -f compose.micro.yml -f compose.dev.yml up
+```
+
+---
+
+## 🔧 Configuration
+
+### Environment Variables
+
+#### API Service
+```env
 DATABASE_URL=postgresql+asyncpg://omr:omr@db/omr
+OMR_URL=http://omr:8090/grade
+SECRET_KEY=your-secret-key
+LOG_LEVEL=INFO
+```
 
-# OMR
-OMR_PORT=8090
+#### OMR Service
+```env
+PORT=8090
+OMR_THREADS=4
+OPENCV_LOG_LEVEL=ERROR
+```
 
-# Frontend
+#### Frontend
+```env
 VITE_API_BASE=/api
+VITE_WS_URL=ws://localhost:8080/ws
 ```
 
 ---
 
-## 🔍 Testing & CI
+## 🧪 Testing
 
-* Py side: `pytest -q`, Go side: `go test`.  
-* GitHub Actions matrix ⟶ lint, test, build multi‑arch images, push to GHCR.
+### Automated Testing
+```bash
+# Run all tests
+make test
+
+# Test individual services
+make test-frontend
+make test-api
+make test-omr
+```
+
+### Manual Testing
+1. Use sample bubble sheets from `test-data/`
+2. Test various image formats (JPG, PNG)
+3. Verify WebSocket updates work correctly
+4. Check Excel export formatting
 
 ---
 
-MIT License · *Amor Fati*
+## 📈 Performance & Scaling
+
+### Resource Requirements
+- **Memory**: 2GB minimum, 4GB recommended
+- **CPU**: 2 cores minimum for OMR processing
+- **Storage**: 10GB for database and temporary files
+
+### Scaling Strategies
+- **Horizontal OMR Scaling**: Add more OMR service replicas
+- **Database Optimization**: Read replicas, connection pooling
+- **Frontend CDN**: Serve static assets from CDN
+- **Load Balancing**: NGINX for multiple API instances
+
+---
+
+## 🔒 Security
+
+### Built-in Security Features
+- **CORS Configuration** for cross-origin requests
+- **Input Validation** on all API endpoints
+- **File Type Validation** to prevent malicious uploads
+- **Database Parameterization** to prevent SQL injection
+- **Environment-based Secrets** management
+
+### Production Recommendations
+- Use HTTPS with proper SSL certificates
+- Implement authentication/authorization
+- Regular security updates for base images
+- Network segmentation in production
+
+---
+
+## 📚 Documentation
+
+Complete documentation available in the `docs/` directory:
+
+- **[Architecture Guide](docs/architecture.md)** - Detailed system design
+- **[API Documentation](docs/api.md)** - Complete API reference
+- **[Deployment Guide](docs/deployment.md)** - Production deployment
+- **[Development Setup](docs/development.md)** - Local development
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🆘 Support
+
+- **Issues**: [GitHub Issues](https://github.com/your-org/bubblegrade/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-org/bubblegrade/discussions)
+- **Documentation**: [Full Documentation](docs/)
+
+---
+
+**Built with ❤️ by the BubbleGrade Team**
+
+*Transforming education through technology, one bubble at a time.*

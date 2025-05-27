@@ -1,0 +1,193 @@
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.header {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin: 0.5rem 0 0 0;
+}
+
+.main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem 2rem;
+}
+
+.drop-zone {
+  border: 3px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.drop-zone.dragging {
+  border-color: #61dafb;
+  background: rgba(97, 218, 251, 0.1);
+  transform: scale(1.02);
+}
+
+.drop-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.drop-icon {
+  font-size: 4rem;
+  opacity: 0.7;
+}
+
+.drop-zone h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.drop-zone p {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-input-label {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.file-input-label:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.drop-zone small {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+.results {
+  margin-top: 2rem;
+}
+
+.results h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.scan-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scan-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status.processing {
+  background: #ffa500;
+  color: white;
+}
+
+.status.completed {
+  background: #4caf50;
+  color: white;
+}
+
+.status.queued {
+  background: #2196f3;
+  color: white;
+}
+
+.status.error {
+  background: #f44336;
+  color: white;
+}
+
+.scan-result {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.score {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.export-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.export-btn:hover {
+  background: #45a049;
+}
+
+.loading {
+  color: #ffa500;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 0 1rem 1rem;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .scan-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .scan-result {
+    justify-content: space-between;
+  }
+}

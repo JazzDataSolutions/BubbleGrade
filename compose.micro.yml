@@ -1,10 +1,17 @@
 
 version: "3.9"
+
 services:
   frontend:
     build: ./services/frontend
     ports:
       - "5173:80"
+    environment:
+      - VITE_API_BASE=/api
+    depends_on:
+      - api
+    networks:
+      - bubblegrade
 
   api:
     build: ./services/api
@@ -13,14 +20,31 @@ services:
     environment:
       - OMR_URL=http://omr:8090/grade
       - DATABASE_URL=postgresql+asyncpg://omr:omr@db/omr
+      - SECRET_KEY=dev-secret-key-change-in-production
     depends_on:
-      - db
-      - omr
+      db:
+        condition: service_healthy
+      omr:
+        condition: service_started
+    volumes:
+      - /tmp:/tmp
+    networks:
+      - bubblegrade
 
   omr:
     build: ./services/omr
     ports:
       - "8090:8090"
+    environment:
+      - PORT=8090
+      - OMR_THREADS=4
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8090/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - bubblegrade
 
   db:
     image: postgres:16-alpine
@@ -32,6 +56,18 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U omr"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - bubblegrade
+
+networks:
+  bubblegrade:
+    driver: bridge
 
 volumes:
   db_data:

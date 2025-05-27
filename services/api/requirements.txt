@@ -2,3 +2,7 @@ fastapi
 uvicorn[standard]
 httpx
 aiofiles
+asyncpg
+sqlalchemy[asyncio]
+openpyxl
+websockets

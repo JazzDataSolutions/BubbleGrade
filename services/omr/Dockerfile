@@ -1,10 +1,28 @@
+# Use OpenCV-enabled Go image
+FROM denismakogon/gocv:4.6.0-ubuntu AS builder
 
-FROM golang:1.22-alpine as build
-WORKDIR /src
+WORKDIR /app
+
+# Copy go mod files
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy source code
 COPY . .
-RUN go build -o /omr
 
-FROM alpine:3.19
-COPY --from=build /omr /omr
+# Build the application
+RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-s -w" -o omr main.go
+
+# Production stage
+FROM denismakogon/gocv:4.6.0-ubuntu-runtime
+
+WORKDIR /app
+
+# Copy the binary from builder stage
+COPY --from=builder /app/omr .
+
+# Expose port
 EXPOSE 8090
-CMD ["/omr"]
+
+# Run the application
+CMD ["./omr"]
