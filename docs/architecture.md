@@ -65,19 +65,19 @@ volumes:
 
 ```mermaid
 sequenceDiagram
-  participant UI
-  participant API
-  participant OMR
-  participant DB
+    participant UI
+    participant API
+    participant OMR
+    participant DB
 
-  UI->>API: upload scan
-  API->>OMR: HTTP /grade
-  OMR-->>API: answers + score
-  API->>DB: store results
-  UI--WS>>API: wait progress
-  API-->>UI: completed event
-  UI->>API: GET /export/{exam}
-  API-->>UI: Excel file
+    UI->>API: upload scan
+    API->>OMR: HTTP /grade
+    OMR-->>API: answers + score
+    API->>DB: store results
+    UI-->>API: wait progress (WebSocket)
+    API-->>UI: completed event
+    UI->>API: GET /export/{exam}
+    API-->>UI: Excel file
 ```
 
 ---
