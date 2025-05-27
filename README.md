@@ -39,8 +39,8 @@ All containers live in the same Docker network created by Compose.
 ## 🔧 Quick Start
 
 ```bash
-git clone https://github.com/<org>/snapgrade.git
-cd snapgrade
+git clone https://github.com/<org>/bubblegrade.git
+cd BubbleGrade
 docker compose -f compose.micro.yml up --build
 open http://localhost:5173
 ```

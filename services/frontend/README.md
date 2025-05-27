@@ -1,0 +1,1 @@
+Frontend code (React + Vite) goes here. Run `npm create vite@latest`.
