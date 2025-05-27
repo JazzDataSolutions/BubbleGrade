@@ -6,3 +6,4 @@ asyncpg
 sqlalchemy[asyncio]
 openpyxl
 websockets
+pydantic
