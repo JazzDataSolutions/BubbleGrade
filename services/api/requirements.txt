@@ -7,4 +7,5 @@ sqlalchemy[asyncio]
 openpyxl
 websockets
 pydantic
-opencv-python-headless  # OpenCV for image processing in orchestrator
+pytesseract                # Tesseract OCR Python wrapper for text extraction
+opencv-python-headless      # OpenCV for image processing in orchestrator

@@ -1,16 +1,42 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import './App.css'
+import UploadCard from './components/Upload/UploadCard'
+import EditableCell from './components/Table/EditableCell'
+import { apiService } from './services/api'
 
 interface ScanResult {
   id: string
-  status: 'QUEUED' | 'PROCESSING' | 'COMPLETED' | 'ERROR'
+  filename: string
+  status: string
+  nombre: { value: string }
+  curp: { value: string }
   score?: number
-  filename?: string
 }
 
 function App() {
   const [scans, setScans] = useState<ScanResult[]>([])
-  const [isDragging, setIsDragging] = useState(false)
+
+  const loadScans = useCallback(async () => {
+    try {
+      const res = await apiService.getScans()
+      setScans(res.scans)
+    } catch (e) {
+      console.error('Failed to load scans', e)
+    }
+  }, [])
+
+  useEffect(() => { loadScans() }, [loadScans])
+
+  const handleFiles = useCallback(async (files: File[]) => {
+    for (const file of files) {
+      try {
+        await apiService.uploadScan(file)
+      } catch (e) {
+        console.error('Upload error', e)
+      }
+    }
+    loadScans()
+  }, [loadScans])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -91,59 +117,43 @@ function App() {
       </header>
 
       <main className="main">
-        <div 
-          className={`drop-zone ${isDragging ? 'dragging' : ''}`}
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-        >
-          <div className="drop-content">
-            <div className="drop-icon">📄</div>
-            <h3>Drop your bubble sheets here</h3>
-            <p>or</p>
-            <label className="file-input-label">
-              <input 
-                type="file" 
-                multiple 
-                accept="image/*,.pdf"
-                onChange={handleFileInput}
-                className="file-input"
-              />
-              Choose Files
-            </label>
-            <small>Supports JPG, PNG, PDF formats</small>
-          </div>
-        </div>
+        <UploadCard onFiles={handleFiles} />
 
-        {scans.length > 0 && (
-          <div className="results">
-            <h2>Scan Results</h2>
-            {scans.map(scan => (
-              <div key={scan.id} className="scan-card">
-                <div className="scan-info">
-                  <h4>{scan.filename}</h4>
-                  <span className={`status ${scan.status.toLowerCase()}`}>
-                    {scan.status}
-                  </span>
-                </div>
-                {scan.status === 'COMPLETED' && (
-                  <div className="scan-result">
-                    <div className="score">Score: {scan.score}%</div>
-                    <button 
-                      onClick={() => exportScan(scan.id)}
-                      className="export-btn"
-                    >
-                      Export Excel
-                    </button>
-                  </div>
-                )}
-                {scan.status === 'PROCESSING' && (
-                  <div className="loading">Processing...</div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+        <section className="results">
+          <h2>Scan Results</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Filename</th>
+                <th>Status</th>
+                <th>Nombre</th>
+                <th>CURP</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {scans.map(scan => (
+                <tr key={scan.id}>
+                  <td>{scan.filename}</td>
+                  <td>{scan.status}</td>
+                  <td>
+                    <EditableCell<string>
+                      value={scan.nombre.value}
+                      onSave={async v => { await apiService.updateScan(scan.id, { nombre: { value: v } }); loadScans() }}
+                    />
+                  </td>
+                  <td>
+                    <EditableCell<string>
+                      value={scan.curp.value}
+                      onSave={async v => { await apiService.updateScan(scan.id, { curp: { value: v } }); loadScans() }}
+                    />
+                  </td>
+                  <td>{scan.score ?? '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
       </main>
     </div>
   )

@@ -103,39 +103,31 @@ class DocumentOrchestrator:
             scan.regions = regions
             await scan_repository.update(scan)
 
-            # Step 2: Extract region images
-            region_images = await self._extract_region_images(processed_image, regions)
+            # Step 2: Extract region images (for optional use)
+            # region_images = await self._extract_region_images(processed_image, regions)
 
-            # Step 3: Process OMR and OCR in parallel
-            logger.info(f"Starting parallel OMR/OCR processing for scan {scan_id}")
-            omr_task = self._process_omr(region_images['original'], regions)
-            ocr_tasks = [
-                self._process_ocr_region(region_images['nombre'], 'nombre', regions.nombre),
-                self._process_ocr_region(region_images['curp'], 'curp', regions.curp)
-            ]
-            
-            # Wait for all processing to complete
-            omr_result, *ocr_results = await asyncio.gather(
-                omr_task, *ocr_tasks, return_exceptions=True
+            # Step 3: Unified OMR + OCR processing via local module
+            from .omr_ocr import grade_scan
+            logger.info(f"Starting unified OMR/OCR processing for scan {scan_id}")
+            merged_result = await asyncio.get_running_loop().run_in_executor(
+                None, grade_scan, processed_image, regions
             )
 
-            # Step 4: Process results and handle errors
-            if isinstance(omr_result, Exception):
-                logger.error(f"OMR processing failed: {omr_result}")
-                omr_result = {'score': 0, 'answers': [], 'total': 0}
+            omr_result = {
+                'score': merged_result.get('score', 0),
+                'answers': merged_result.get('answers', []),
+                'total': merged_result.get('total', 0)
+            }
+            nombre_result = {
+                'text': merged_result.get('nombre_text', '').strip(),
+                'confidence': merged_result.get('nombre_confidence', 0.0)
+            }
+            curp_result = {
+                'text': merged_result.get('curp_text', '').strip(),
+                'confidence': merged_result.get('curp_confidence', 0.0)
+            }
 
-            nombre_result, curp_result = ocr_results
-            
-            # Handle OCR errors gracefully
-            if isinstance(nombre_result, Exception):
-                logger.error(f"Nombre OCR failed: {nombre_result}")
-                nombre_result = {'text': '', 'confidence': 0.0}
-                
-            if isinstance(curp_result, Exception):
-                logger.error(f"CURP OCR failed: {curp_result}")
-                curp_result = {'text': '', 'confidence': 0.0}
-
-            # Step 5: Validate and update scan results
+            # Step 4: Validate and update scan results
             scan = await self._finalize_scan_results(
                 scan, omr_result, nombre_result, curp_result, scan_repository
             )
@@ -306,7 +298,7 @@ class DocumentOrchestrator:
     def _is_valid_curp_format(self, curp: str) -> bool:
         """Basic CURP format validation"""
         import re
-        curp_pattern = r'^[A-Z]{4}[0-9]{6}[HM][A-Z]{2}[A-Z0-9]{3}$'
+        curp_pattern = r'^[A-Z]{4}\d{6}[HM][A-Z]{5}\d{2}$'
         return bool(re.match(curp_pattern, curp.strip()))
 
 # Initialize orchestrator
@@ -480,38 +472,13 @@ async def update_scan(
 @app.get("/health")
 async def health_check():
     """Comprehensive health check"""
-    
-    health_status = {
-        "status": "healthy",
-        "timestamp": datetime.utcnow().isoformat(),
-        "services": {}
-    }
-    
+    # Check database connectivity
     try:
-        # Check database
         async with async_session() as session:
-            result = await session.execute(select(1))
-            health_status["services"]["database"] = "healthy"
+            await session.execute(select(1))
+        return {"status": "healthy"}
     except Exception as e:
-        health_status["services"]["database"] = f"unhealthy: {str(e)}"
-        health_status["status"] = "degraded"
-    
-    # Check microservices
-    try:
-        omr_health = await microservice_client.check_omr_health()
-        health_status["services"]["omr"] = "healthy" if omr_health else "unhealthy"
-    except Exception:
-        health_status["services"]["omr"] = "unhealthy"
-        health_status["status"] = "degraded"
-    
-    try:
-        ocr_health = await microservice_client.check_ocr_health()
-        health_status["services"]["ocr"] = "healthy" if ocr_health else "unhealthy"
-    except Exception:
-        health_status["services"]["ocr"] = "unhealthy"
-        health_status["status"] = "degraded"
-    
-    return health_status
+        return {"status": "unhealthy", "error": str(e)}
 
 if __name__ == "__main__":
     import uvicorn

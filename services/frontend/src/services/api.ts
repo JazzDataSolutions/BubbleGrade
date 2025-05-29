@@ -186,6 +186,15 @@ class ApiService {
       body: JSON.stringify({ templateId })
     })
   }
+  /**
+   * Update scan fields (e.g., nombre, curp, status)
+   */
+  async updateScan(scanId: string, updates: Partial<any>): Promise<Scan> {
+    return this.request(`/scans/${scanId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updates)
+    })
+  }
 
   async exportScan(scanId: string, format: 'xlsx' | 'csv' | 'pdf' = 'xlsx'): Promise<Blob> {
     const response = await fetch(`${this.config.baseURL}/exports/${scanId}?format=${format}`, {

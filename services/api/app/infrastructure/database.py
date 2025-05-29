@@ -27,6 +27,9 @@ class ScanModel(Base):
     regions: Mapped[dict] = mapped_column(JSONB, nullable=True)
     nombre: Mapped[dict] = mapped_column(JSONB, nullable=True)
     curp: Mapped[dict] = mapped_column(JSONB, nullable=True)
+    # Explicit fields for easy querying
+    name: Mapped[str] = mapped_column(String(255), nullable=True)
+    curp_value: Mapped[str] = mapped_column(String(18), nullable=True)
     image_quality: Mapped[dict] = mapped_column(JSONB, nullable=True)
     
 # Alias for processed scans table to match orchestrator domain

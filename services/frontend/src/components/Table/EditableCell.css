@@ -1,0 +1,33 @@
+.editable-cell {
+  display: inline-block;
+}
+.editable-cell .view-mode {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.editable-cell .edit-icon {
+  margin-left: 4px;
+  font-size: 0.9em;
+}
+.editable-cell .edit-mode {
+  display: flex;
+  align-items: center;
+}
+.editable-cell .edit-input {
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+.editable-cell .btn-save,
+.editable-cell .btn-cancel {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 4px;
+}
+.editable-cell .error-msg {
+  color: #f44336;
+  margin-left: 8px;
+}

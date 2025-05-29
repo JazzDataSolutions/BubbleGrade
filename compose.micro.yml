@@ -5,7 +5,7 @@ services:
     ports:
       - "5173:80"
     environment:
-      - VITE_API_BASE=/api
+      - VITE_API_BASE=http://localhost:8080/api
     depends_on:
       - api
     networks:
@@ -22,27 +22,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      omr:
-        condition: service_started
     volumes:
       - /tmp:/tmp
     networks:
       - bubblegrade
 
-  omr:
-    build: ./services/omr
-    ports:
-      - "8090:8090"
-    environment:
-      - PORT=8090
-      - OMR_THREADS=4
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8090/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    networks:
-      - bubblegrade
 
   db:
     image: postgres:16-alpine
