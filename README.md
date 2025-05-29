@@ -141,9 +141,7 @@ npm install
 npm run dev
 ```
 
----
-
-## 📂 **Estructura Mejorada del Proyecto**
+## 📂 **Estructura del Proyecto**
 
 ```
 BubbleGrade/
