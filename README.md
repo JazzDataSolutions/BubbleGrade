@@ -74,8 +74,6 @@ graph TB
 | **Base de Datos** | PostgreSQL 16 + Esquema avanzado | 5432 | Persistencia de datos | Resultados OCR/OMR, auditoría, métricas de rendimiento |
 | **Caché** | Redis 7 + Gestión de sesiones | 6379 | Rendimiento | Caché de resultados, almacenamiento de sesiones, rate limiting |
 
----
-
 ## 🆕 **Novedades de BubbleGrade v2**
 
 ### **🔥 Principales mejoras respecto a BubbleGrade v1**
