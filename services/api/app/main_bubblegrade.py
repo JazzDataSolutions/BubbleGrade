@@ -418,17 +418,18 @@ async def list_scans(
     offset: int = 0,
     repository: ProcessedScanRepository = Depends(get_scan_repository)
 ):
-    """List processed scans with optional filtering"""
-    
-    scans = await repository.list_scans(
-        status=status,
-        limit=limit,
-        offset=offset
-    )
-    
+    """List processed scans with optional filtering and pagination"""
+    # Retrieve all scans
+    all_scans = await repository.get_all()
+    # Optional status filtering
+    if status:
+        all_scans = [s for s in all_scans if s.status.value == status]
+    total = len(all_scans)
+    # Apply pagination
+    sliced = all_scans[offset: offset + limit]
     return {
-        "scans": [scan.to_dict() for scan in scans],
-        "total": len(scans),
+        "scans": [scan.to_dict() for scan in sliced],
+        "total": total,
         "limit": limit,
         "offset": offset
     }

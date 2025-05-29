@@ -18,7 +18,7 @@ Currently, the API does not require authentication for development purposes. In 
 
 ### Upload Scan
 
-**POST** `/api/scans`
+**POST** `/api/v1/scans`
 
 Upload a bubble sheet image for processing.
 
@@ -27,7 +27,7 @@ Upload a bubble sheet image for processing.
 - Body: Form data with file field
 
 ```bash
-curl -X POST "http://localhost:8080/api/scans" \
+curl -X POST "http://localhost:8080/api/v1/scans" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@bubble_sheet.jpg"
 ```
