@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import './App.css'
 import UploadCard from './components/Upload/UploadCard'
 import EditableCell from './components/Table/EditableCell'
+import ProgressDrawer from './components/ProgressDrawer/ProgressDrawer'
 import { apiService } from './services/api'
 
 interface ScanResult {
@@ -15,6 +16,8 @@ interface ScanResult {
 
 function App() {
   const [scans, setScans] = useState<ScanResult[]>([])
+  const [progressVisible, setProgressVisible] = useState(false)
+  const [currentScanId, setCurrentScanId] = useState('')
 
   const loadScans = useCallback(async () => {
     try {
@@ -30,7 +33,9 @@ function App() {
   const handleFiles = useCallback(async (files: File[]) => {
     for (const file of files) {
       try {
-        await apiService.uploadScan(file)
+        const result = await apiService.uploadScan(file)
+        setCurrentScanId(result.id)
+        setProgressVisible(true)
       } catch (e) {
         console.error('Upload error', e)
       }
@@ -118,6 +123,11 @@ function App() {
 
       <main className="main">
         <UploadCard onFiles={handleFiles} />
+        <ProgressDrawer
+          visible={progressVisible}
+          onClose={() => setProgressVisible(false)}
+          scanId={currentScanId}
+        />
 
         <section className="results">
           <h2>Scan Results</h2>
@@ -145,7 +155,16 @@ function App() {
                   <td>
                     <EditableCell<string>
                       value={scan.curp.value}
-                      onSave={async v => { await apiService.updateScan(scan.id, { curp: { value: v } }); loadScans() }}
+                      validator={v => {
+                        const curpRegex = /^[A-Z]{4}\d{6}[HM][A-Z]{5}\d{2}$/
+                        return curpRegex.test(v)
+                          ? null
+                          : 'Formato CURP inválido'
+                      }}
+                      onSave={async v => {
+                        await apiService.updateScan(scan.id, { curp: { value: v } })
+                        loadScans()
+                      }}
                     />
                   </td>
                   <td>{scan.score ?? '-'}</td>

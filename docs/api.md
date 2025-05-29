@@ -1,270 +1,75 @@
-# API Documentation
+ # Documentación de la API
 
-## Overview
+ ## Descripción General
 
-The BubbleGrade API is built with FastAPI and provides RESTful endpoints for managing bubble sheet scans, real-time WebSocket communication, and Excel export functionality.
+ La API de BubbleGrade está desarrollada con FastAPI y ofrece:
+ - Endpoints REST para gestionar escaneos de formularios de burbujas.
+ - Comunicación en tiempo real mediante WebSocket para seguimiento de progreso.
+ - Exportación de resultados en formato Excel.
 
-## Base URL
+ ## URL Base
 
-```
-http://localhost:8080/api
-```
+ ```
+ http://localhost:8080/api/v1
+ ```
 
-## Authentication
+ ## Autenticación
 
-Currently, the API does not require authentication for development purposes. In production, implement proper authentication mechanisms.
+ - En desarrollo: no requiere autenticación.
+ - En producción: implementar JWT u OAuth2.
 
-## Endpoints
+ ## Endpoints Principales
 
-### Upload Scan
+ 1. **Subir Escaneo**
+    - **POST** `/api/v1/scans`
+    - Solicitud: `multipart/form-data` con campo `file` (imagen JPG/PNG).
+    - Respuesta:
+      ```json
+      { "id": "uuid-escaneo", "filename": "archivo.jpg", "status": "QUEUED" }
+      ```
 
-**POST** `/api/v1/scans`
+ 2. **Listar Escaneos**
+    - **GET** `/api/v1/scans?limit=&offset=&status=`
+    - Consulta paginada y filtrada por estado.
+    - Respuesta:
+      ```json
+      {
+        "scans": [ /* array de objetos ProcessedScan */ ],
+        "total": 123,
+        "offset": 0,
+        "limit": 20
+      }
+      ```
 
-Upload a bubble sheet image for processing.
+ 3. **Detalles de Escaneo**
+    - **GET** `/api/v1/scans/{scan_id}`
+    - Parámetro: `scan_id` (UUID).
+    - Respuesta: objeto `ProcessedScan` con regiones, resultados OMR/OCR y metadatos.
 
-**Request:**
-- Content-Type: `multipart/form-data`
-- Body: Form data with file field
+ 4. **Actualizar Escaneo**
+    - **PATCH** `/api/v1/scans/{scan_id}`
+    - Cuerpo JSON con correcciones manuales:
+      ```json
+      { "nombre": { "value": "Nuevo Nombre" }, "curp": { "value": "CURP123..." } }
+      ```
+    - Respuesta: `ProcessedScan` actualizado.
 
-```bash
-curl -X POST "http://localhost:8080/api/v1/scans" \
-  -H "Content-Type: multipart/form-data" \
-  -F "file=@bubble_sheet.jpg"
-```
+ 5. **Exportar Resultados**
+    - **GET** `/api/v1/exports/{scan_id}?format=xlsx|csv|pdf`
+    - Descarga de archivo con resultados.
 
-**Response:**
-```json
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "QUEUED",
-  "filename": "bubble_sheet.jpg"
-}
-```
+ 6. **Health Check**
+    - **GET** `/health`
+    - Respuesta:
+      ```json
+      { "status": "healthy" }
+      ```
 
-### List All Scans
+ ## Comunicación WebSocket
 
-**GET** `/api/scans`
-
-Retrieve all scans ordered by upload time (newest first).
-
-**Response:**
-```json
-[
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
-    "filename": "bubble_sheet.jpg",
-    "status": "COMPLETED",
-    "score": 85,
-    "answers": ["A", "B", "C", "D", "A"],
-    "total_questions": 5,
-    "upload_time": "2023-12-01T10:30:00",
-    "processed_time": "2023-12-01T10:30:15",
-    "regions": {
-      "omr": {"x": 124, "y": 870, "width": 1800, "height": 2000},
-      "nombre": {"x": 200, "y": 50, "width": 1800, "height": 300},
-      "curp": {"x": 200, "y": 350, "width": 1800, "height": 300}
-    },
-    "nombre": {
-      "value": "Juan Perez",
-      "confidence": 0.92,
-      "needsReview": false,
-      "correctedBy": null,
-      "correctedAt": null
-    },
-    "curp": {
-      "value": "PEPJ800101HMCRRN09",
-      "confidence": 0.98,
-      "needsReview": false,
-      "correctedBy": null,
-      "correctedAt": null
-    },
-    "image_quality": {
-      "resolution": {"width": 2480, "height": 3508},
-      "clarity": 123.45,
-      "skew": 2.5
-    }
-  }
-]
-``` 
-
-### Get Specific Scan
-
-**GET** `/api/scans/{scan_id}`
-
-Retrieve details for a specific scan.
-
-**Parameters:**
-- `scan_id` (string): UUID of the scan
-
-**Response:**
-```json
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "filename": "bubble_sheet.jpg",
-  "status": "COMPLETED",
-  "score": 85,
-  "answers": ["A", "B", "C", "D", "A"],
-  "total_questions": 5,
-  "upload_time": "2023-12-01T10:30:00",
-  "processed_time": "2023-12-01T10:30:15",
-  "regions": {
-    "omr": {"x": 124, "y": 870, "width": 1800, "height": 2000},
-    "nombre": {"x": 200, "y": 50, "width": 1800, "height": 300},
-    "curp": {"x": 200, "y": 350, "width": 1800, "height": 300}
-  },
-  "nombre": {
-    "value": "Juan Perez",
-    "confidence": 0.92,
-    "needsReview": false,
-    "correctedBy": null,
-    "correctedAt": null
-  },
-  "curp": {
-    "value": "PEPJ800101HMCRRN09",
-    "confidence": 0.98,
-    "needsReview": false,
-    "correctedBy": null,
-    "correctedAt": null
-  },
-  "image_quality": {
-    "resolution": {"width": 2480, "height": 3508},
-    "clarity": 123.45,
-    "skew": 2.5
-  }
-}
-``` 
-
-### Export Scan Results
-
-**GET** `/api/exports/{scan_id}`
-
-Download Excel file with detailed scan results.
-
-**Parameters:**
-- `scan_id` (string): UUID of the scan
-
-**Response:**
-- Content-Type: `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
-- File download with formatted Excel report
-
-### Health Check
-
-**GET** `/health`
-
-Check API and database connectivity.
-
-**Response:**
-```json
-{
-  "status": "healthy",
-  "service": "api",
-  "database": "connected"
-}
-```
-
-## WebSocket Communication
-
-### Connection
-
-Connect to the WebSocket endpoint for real-time updates:
-
-```
-ws://localhost:8080/ws
-```
-
-### Message Types
-
-#### Scan Update
-```json
-{
-  "type": "scan_update",
-  "scan_id": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "PROCESSING"
-}
-```
-
-#### Scan Complete
-```json
-{
-  "type": "scan_complete",
-  "scan_id": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "COMPLETED",
-  "score": 85,
-  "answers": ["A", "B", "C", "D", "A"]
-}
-```
-
-#### Scan Error
-```json
-{
-  "type": "scan_error",
-  "scan_id": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "ERROR",
-  "error": "Processing failed: Invalid image format"
-}
-```
-
-## Status Values
-
-| Status | Description |
-|--------|-------------|
-| `QUEUED` | Scan uploaded, waiting for processing |
-| `PROCESSING` | Currently being processed by OMR service |
-| `COMPLETED` | Processing finished successfully |
-| `ERROR` | Processing failed due to an error |
-
-## Error Responses
-
-### 400 Bad Request
-```json
-{
-  "detail": "Invalid file format. Supported formats: JPG, PNG"
-}
-```
-
-### 404 Not Found
-```json
-{
-  "detail": "Scan not found"
-}
-```
-
-### 500 Internal Server Error
-```json
-{
-  "detail": "Internal server error occurred during processing"
-}
-```
-
-## Rate Limiting
-
-Currently no rate limiting is implemented. Consider implementing rate limiting for production use.
-
-## CORS Configuration
-
-The API is configured to accept requests from any origin during development. Restrict origins in production:
-
-```python
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://yourdomain.com"],
-    allow_credentials=True,
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
-)
-```
-
-## Database Schema
-
-### Scans Table
-
-| Column | Type | Description |
-|--------|------|-------------|
-| `id` | UUID | Primary key, auto-generated |
-| `filename` | VARCHAR(255) | Original filename |
-| `status` | VARCHAR(50) | Current processing status |
-| `score` | INTEGER | Final score percentage |
-| `answers` | JSONB | Array of detected answers |
-| `total_questions` | INTEGER | Number of questions processed |
-| `upload_time` | TIMESTAMP | When scan was uploaded |
-| `processed_time` | TIMESTAMP | When processing completed |
+ - **URL**: `ws://localhost:8080/ws`
+ - **Tipos de Mensajes**:
+   1. **scan_progress**: `{ "type": "scan_progress", "scan_id": "uuid", "stage": "preprocessing" }`
+   2. **scan_progress** (graded): `{ "type": "scan_progress", "scan_id": "uuid", "stage": "graded", "score": 85 }`
+   3. **scan_progress** (completed): `{ "type": "scan_progress", "scan_id": "uuid", "status": "COMPLETED", "score": 85 }`
+   4. **scan_progress** (error): `{ "type": "scan_progress", "scan_id": "uuid", "status": "ERROR", "error": "mensaje" }`

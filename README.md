@@ -1,6 +1,6 @@
-# 🫧 BubbleGrade – Next-Generation OCR + OMR Document Processing
+# 🫧 BubbleGrade – Procesamiento OCR+OMR de Documentos de Nueva Generación
 
-**BubbleGrade** is an enterprise-ready **hybrid OCR + OMR processing system** designed for automated evaluation of academic documents. Combining **handwriting recognition**, **bubble sheet processing**, and **intelligent document analysis** in a modern microservices architecture.
+**BubbleGrade** es un sistema empresarial híbrido de procesamiento de **OCR** y **OMR** diseñado para la evaluación automatizada de documentos académicos. Combina reconocimiento de escritura manuscrita, procesamiento de formularios de burbujas y análisis inteligente de documentos en una arquitectura de microservicios moderna.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
@@ -11,46 +11,44 @@
 
 ---
 
-## 🚀 **Revolutionary Features**
+## 🚀 **Funcionalidades Revolucionarias**
 
-### 🎯 **Hybrid Processing Capabilities**
-- **📝 Handwritten Name Recognition** using advanced OCR with Tesseract.js
-- **🆔 CURP Extraction & Validation** with Mexican official format verification
-- **🔴 Real-time Bubble Detection** using OpenCV and Hough Circle Transform
-- **🤖 Intelligent Region Detection** with automatic document layout analysis
-- **✏️ Manual Correction Interface** with confidence-based review workflow
-- **📊 Comprehensive Analytics** with quality metrics and processing insights
+### 🎯 **Capacidades Principales**
+- **📝 Reconocimiento de Escritura a Mano** con OCR avanzado (Tesseract)
+- **🆔 Extracción y Validación de CURP** con verificación de formato oficial
+- **🔴 Detección en Tiempo Real de Burbujas** mediante OpenCV y Hough Circle
+- **🤖 Detección Inteligente de Regiones** y segmentación automática de formularios
+- **✏️ Interfaz de Corrección Manual** basada en niveles de confianza
+- **📊 Análisis Completo** con métricas de calidad y rendimiento
 
-### 🏗️ **Enterprise Architecture**
-- **4 Specialized Microservices** (React Frontend, FastAPI Orchestrator, Go OMR, Node.js OCR)
-- **Clean Architecture** with SOLID principles and Domain-Driven Design
-- **Async Processing Pipeline** with parallel OMR/OCR execution
-- **Real-time WebSocket Updates** for live processing status
-- **Advanced Database Schema** with audit trails and performance metrics
-- **Docker-First Deployment** with health checks and auto-scaling ready
+### 🏗️ **Arquitectura Empresarial**
+- **6 Microservicios Especializados** (Frontend React, Orquestador FastAPI, Servicio OMR en Go, OCR en Node.js, PostgreSQL, Redis)
+- **Arquitectura Limpia** con principios SOLID y Diseño Dirigido por Dominio
+- **Pipeline Asíncrono** con procesamiento paralelo de OMR y OCR
+- **Actualizaciones en Tiempo Real** vía WebSocket
+- **Esquema de Base de Datos Avanzado** con auditoría y métricas de rendimiento
+- **Despliegue Docker-First** con health checks y escalado automático
 
-### 🎨 **Modern User Experience**
-- **React 18 + TypeScript** with Zustand state management
-- **Real-time Editing Interface** with confidence indicators
-- **Responsive Design** optimized for desktop and mobile
-- **Advanced File Validation** with duplicate detection
-- **Professional Export Options** (Excel, CSV, PDF)
+### 🎨 **Experiencia de Usuario Moderna**
+- **React 18 + TypeScript + Vite** con gestión de estado centralizada
+- **Interfaz de Edición en Tiempo Real** con indicadores de confianza
+- **Diseño Responsivo** optimizado para escritorio y móvil
+- **Validación Avanzada de Archivos** con detección de duplicados
+- **Opciones de Exportación Profesional** (Excel, CSV, PDF)
 
 ---
 
-## 🏗️ **System Architecture**
+## 🏗️ **Arquitectura del Sistema**
 
 ```mermaid
 graph TB
-    subgraph "Client Layer"
+    subgraph "Capa de Cliente"
         Browser[Web Browser<br/>React 18 + TypeScript]
     end
     
-    subgraph "BubbleGrade Microservices Network"
+    subgraph "Servicios Desplegados"
         Frontend[React Frontend<br/>:5173<br/>Vite + Zustand]
-        API[FastAPI Orchestrator<br/>:8080<br/>Python + OpenCV]
-        OMR[Go OMR Service<br/>:8090<br/>gocv + Region Detection]
-        OCR[Node.js OCR Service<br/>:8100<br/>Tesseract.js + Sharp]
+        API[API Monolito<br/>:8080<br/>FastAPI + OMR/OCR]
         DB[(PostgreSQL 16<br/>:5432<br/>Enhanced Schema)]
         Redis[(Redis<br/>:6379<br/>Caching + Sessions)]
     end
@@ -58,17 +56,11 @@ graph TB
     Browser --> Frontend
     Frontend -.->|WebSocket| API
     Frontend --> API
-    API --> OMR
-    API --> OCR
     API --> DB
     API --> Redis
-    OMR --> API
-    OCR --> API
     
     style Frontend fill:#61dafb
     style API fill:#009688
-    style OMR fill:#00add8
-    style OCR fill:#339933
     style DB fill:#336791
     style Redis fill:#dc382d
 ```
@@ -77,12 +69,10 @@ graph TB
 
 | Service | Technology Stack | Port | Purpose | Key Features |
 |---------|------------------|------|---------|--------------|
-| **Frontend** | React 18 + Vite + TypeScript + Zustand | 5173 | User Interface | Real-time editing, WebSocket updates, CURP validation |
-| **API** | FastAPI + OpenCV + SQLAlchemy + AsyncPG | 8080 | Orchestration | Async processing, region detection, microservice coordination |
-| **OMR** | Go + gocv + Enhanced algorithms | 8090 | Bubble Detection | Circle detection, region segmentation, quality analysis |
-| **OCR** | Node.js + Tesseract.js + Sharp | 8100 | Text Recognition | Handwriting OCR, CURP extraction, confidence scoring |
-| **Database** | PostgreSQL 16 + Advanced schema | 5432 | Data Persistence | OCR results, audit trails, performance metrics |
-| **Cache** | Redis 7 + Session management | 6379 | Performance | Result caching, session storage, rate limiting |
+| **Frontend** | React 18 + Vite + TypeScript + Zustand | 5173 | Interfaz de usuario | Edición en tiempo real, WebSocket, validación de CURP |
+| **API (Monolito)** | FastAPI + SQLAlchemy + AsyncPG + OpenCV + Tesseract | 8080 | Orquestación y procesamiento | Pipeline asíncrono, detección de regiones, OMR/OCR embebidos, WebSocket |
+| **Base de Datos** | PostgreSQL 16 + Esquema avanzado | 5432 | Persistencia de datos | Resultados OCR/OMR, auditoría, métricas de rendimiento |
+| **Caché** | Redis 7 + Gestión de sesiones | 6379 | Rendimiento | Caché de resultados, almacenamiento de sesiones, rate limiting |
 
 ---
 
@@ -155,45 +145,40 @@ npm run dev
 
 ---
 
-## 📂 **Enhanced Project Structure**
+## 📂 **Estructura Mejorada del Proyecto**
 
 ```
 BubbleGrade/
-├── 📋 README.md                         # This enhanced documentation
-├── 🐳 docker-compose.bubblegrade.yml    # Production deployment config
-├── 🗄️ init_bubblegrade.sql             # Database initialization
-├── 🚀 deploy_bubblegrade.sh             # Automated deployment script
-├── 🧪 test_bubblegrade.sh               # Comprehensive testing suite
-├── 📚 docs/                             # Documentación
+├── 📋 README.md                         # Documentación principal en español
+├── 🐳 docker-compose.bubblegrade.yml    # Configuración de despliegue en producción
+├── 🗄️ init_bubblegrade.sql             # Script de inicialización de la base de datos
+├── 🚀 deploy_bubblegrade.sh             # Script de despliegue automatizado
+├── 🧪 test_bubblegrade.sh               # Suite de pruebas integrales
+├── 📚 docs/                             # Documentación Sphinx en español
+│   ├── index.rst                        # Punto de entrada de la documentación
+│   ├── getting-started.rst              # Guía de inicio rápido
 │   ├── api.md                           # Documentación de la API
-│   ├── architecture.md                  # Arquitectura del sistema
-│   ├── deployment.md                    # Guía de despliegue
-│   └── development.md                   # Guía de desarrollo
-├── 🎨 services/frontend/                # React 18 + TypeScript frontend
-│   ├── src/
-│   │   ├── components/OCR/              # OCR editing components
-│   │   ├── utils/curpValidator.ts       # CURP validation utilities
-│   │   ├── store/index.ts               # Zustand state management
-│   │   └── types/bubblegrade.ts         # Enhanced TypeScript types
-│   ├── package_improved.json           # Enhanced dependencies
-│   └── Dockerfile                        # Production container
-├── ⚡ services/api/                     # FastAPI orchestration service
-│   ├── app/
-│   │   ├── main_bubblegrade.py         # Enhanced main application
-│   │   ├── middleware/validation.py     # Security & validation
-│   │   └── presentation/routers_v2.py  # API v2 endpoints
-│   ├── alembic/                        # Database migrations
-│   └── Dockerfile                        # Production container
-├── 🔍 services/omr/                    # Go OMR with region detection
-│   ├── main_enhanced.go                # Enhanced OMR processing
-│   └── Dockerfile                        # Container build
-└── 🔤 services/ocr/                    # Node.js OCR microservice
-    ├── src/
-    │   ├── server.ts                   # OCR service main
-    │   ├── processors/OCRProcessor.ts   # Tesseract.js integration
-    │   └── services/ValidationService.ts # Text validation
-    ├── package.json                   # OCR service dependencies
-    └── Dockerfile                     # Node.js container
+│   ├── architecture/                    # Carpeta de arquitectura del sistema
+│   └── roadmap.rst                      # Hoja de ruta del proyecto
+├── 🎨 services/frontend/                # Frontend en React 18 + TypeScript
+│   ├── src/                             # Código fuente
+│   │   ├── components/                  # Componentes React (UploadCard, EditableCell, ProgressDrawer)
+│   │   ├── utils/curpValidator.ts       # Utilidades de validación de CURP
+│   │   ├── services/api.ts              # Cliente HTTP y WebSocket
+│   │   └── store/                       # Estado global con Zustand
+│   ├── package.json                     # Dependencias y scripts
+│   └── Dockerfile                       # Contenedor de producción
+├── ⚡ services/api/                     # Servicio orquestador en FastAPI
+│   ├── app/                             # Implementación Clean Architecture
+│   │   ├── main_bubblegrade.py          # Aplicación principal FastAPI
+│   │   ├── routers/                     # Rutas HTTP y WebSocket
+│   │   ├── services/                    # Lógica de negocio (OCR/OMR, WS)
+│   │   ├── crud/                        # Acceso a datos (repositorios)
+│   │   └── infrastructure/              # Modelos, migraciones y configuración
+│   ├── alembic/                         # Migraciones de base de datos
+│   ├── requirements.txt                 # Dependencias Python
+│   └── Dockerfile                       # Contenedor de producción
+```  
 ```
 
 ---

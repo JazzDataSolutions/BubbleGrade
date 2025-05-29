@@ -1,10 +1,10 @@
-Clean Architecture Implementation
-================================
+Implementación de Arquitectura Limpia
+====================================
 
-BubbleGrade implements **Clean Architecture** principles with **SOLID** design patterns to ensure maintainability, testability, and scalability.
+BubbleGrade implementa los principios de **Arquitectura Limpia** y los patrones **SOLID** para asegurar la mantenibilidad, facilidad de pruebas y escalabilidad.
 
-Architecture Overview
---------------------
+Visión General de la Arquitectura
+--------------------------------
 
 The system follows a layered architecture with clear separation of concerns:
 
@@ -38,13 +38,13 @@ The system follows a layered architecture with clear separation of concerns:
     │  └─────────────┘  └─────────────┘  └─────────────┘     │
     └─────────────────────────────────────────────────────────┘
 
-Layer Responsibilities
----------------------
+Responsabilidades de las Capas
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Domain Layer
-~~~~~~~~~~~~
+Capa de Dominio
+~~~~~~~~~~~~~~~
 
-**Location**: ``services/api/app/domain/``
+**Ubicación**: ``services/api/app/domain/``
 
 Contains the core business logic and rules:
 
@@ -67,10 +67,10 @@ Contains the core business logic and rules:
             self.score = score
             self.answers = answers
 
-Application Layer
-~~~~~~~~~~~~~~~~
+Capa de Aplicación
+~~~~~~~~~~~~~~~~~~
 
-**Location**: ``services/api/app/application/``
+**Ubicación**: ``services/api/app/application/``
 
 Orchestrates business workflows:
 
@@ -93,10 +93,10 @@ Orchestrates business workflows:
             # Process asynchronously
             return scan
 
-Infrastructure Layer
-~~~~~~~~~~~~~~~~~~~
+Capa de Infraestructura
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Location**: ``services/api/app/infrastructure/``
+**Ubicación**: ``services/api/app/infrastructure/``
 
 Implements external concerns:
 
@@ -105,10 +105,10 @@ Implements external concerns:
 - **External Services** (``external_services.py``): HTTP clients, file storage
 - **Mappers** (``mappers.py``): Domain ↔ Persistence model conversion
 
-Presentation Layer
-~~~~~~~~~~~~~~~~~
+Capa de Presentación
+~~~~~~~~~~~~~~~~~~~~
 
-**Location**: ``services/api/app/presentation/``
+**Ubicación**: ``services/api/app/presentation/``
 
 Handles HTTP concerns:
 

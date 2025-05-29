@@ -1,12 +1,12 @@
-Senior Architect Roadmap
-=======================
+Hoja de Ruta (Roadmap)
+======================
 
 As a **Senior Solutions Architect**, this strategic roadmap outlines the evolution path for BubbleGrade from its current Clean Architecture foundation to enterprise-grade scalability.
 
 Current State Assessment
 -----------------------
 
-✅ **Completed Foundations**
+✅ **Fundamentos Completados**
    - Clean Architecture with SOLID principles
    - Domain-driven design implementation
    - Microservices containerization
@@ -14,7 +14,7 @@ Current State Assessment
    - WebSocket real-time communication
    - PostgreSQL data persistence
 
-🚧 **Technical Debt & Gaps**
+🚧 **Deuda Técnica y Brechas**
    - Mock OMR service (needs real OpenCV integration)
    - No authentication/authorization
    - Limited monitoring and observability
@@ -24,7 +24,7 @@ Current State Assessment
 Strategic Implementation Phases
 ------------------------------
 
-Phase 1: Core Infrastructure (Q1-Q2 2024)
+Fase 1: Infraestructura Básica (Q1-Q2 2025)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 🔐 **Security & Authentication**
@@ -93,7 +93,7 @@ Phase 1: Core Infrastructure (Q1-Q2 2024)
      - Point-in-time recovery capability
      - Cross-region backup replication
 
-Phase 2: Scalability & Performance (Q2-Q3 2024)
+Fase 2: Escalabilidad y Rendimiento (Q2-Q3 2025)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ⚡ **High Availability**
@@ -156,7 +156,7 @@ Phase 2: Scalability & Performance (Q2-Q3 2024)
      - Custom scoring algorithms
      - Template versioning and validation
 
-Phase 3: DevOps & Platform (Q3-Q4 2024)
+Fase 3: DevOps y Plataforma (Q3-Q4 2025)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 🔄 **CI/CD Pipeline**

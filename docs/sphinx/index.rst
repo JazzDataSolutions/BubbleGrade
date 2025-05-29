@@ -1,7 +1,7 @@
-🫧 BubbleGrade Documentation
-===========================
+🫧 Documentación de BubbleGrade
+==============================
 
-Welcome to BubbleGrade, an advanced **Optical Mark Recognition (OMR)** system designed for automated grading of bubble sheets and multiple-choice exams.
+Bienvenido a BubbleGrade, un sistema avanzado de **Reconocimiento Óptico de Marcas (OMR)** diseñado para la calificación automatizada de formularios de opción múltiple.
 
 .. image:: _static/bubblegrade-banner.png
    :alt: BubbleGrade Banner
@@ -12,7 +12,7 @@ Welcome to BubbleGrade, an advanced **Optical Mark Recognition (OMR)** system de
 Features
 --------
 
-🎯 **Core Capabilities**
+🎯 **Capacidades Principales**
    - Real-time bubble detection using OpenCV and Hough Circle Transform
    - Drag-and-drop file upload with instant processing feedback
    - Live progress updates via WebSocket connections
@@ -20,7 +20,7 @@ Features
    - PostgreSQL database for persistent scan history
    - RESTful API with comprehensive endpoints
 
-🏗️ **Architecture**
+🏗️ **Arquitectura**
    - **Clean Architecture** with SOLID principles implementation
    - **Microservices design** with independent, scalable services
    - **Container-first** approach with Docker Compose orchestration
@@ -28,7 +28,7 @@ Features
    - **Production-ready** with proper logging, error handling, and monitoring
    - **Domain-driven design** with clear separation of concerns
 
-🎨 **User Experience**
+🎨 **Experiencia de Usuario**
    - Modern React interface with TypeScript and Vite
    - Responsive design that works on desktop and mobile
    - Real-time status updates during scan processing
@@ -39,14 +39,14 @@ Quick Start
 
 .. code-block:: bash
 
-   # Clone the repository
-   git clone <repository-url>
+   # Clonar el repositorio
+   git clone <url-del-repositorio>
    cd BubbleGrade
 
-   # Start all services
+   # Iniciar todos los servicios
    docker compose -f compose.micro.yml up --build
 
-   # Access the application
+   # Abrir la aplicación
    open http://localhost:5173
 
 System Architecture
@@ -78,7 +78,7 @@ Service Details
 --------------
 
 +-------------+---------------------------+------+------------------+----------------------------------------+
-| Service     | Technology                | Port | Purpose          | Key Features                           |
+| Servicio    | Tecnología                | Puerto | Propósito        | Características Clave                  |
 +=============+===========================+======+==================+========================================+
 | Frontend    | React 18 + Vite + TS     | 5173 | User Interface  | Drag-drop, real-time updates, responsive |
 +-------------+---------------------------+------+------------------+----------------------------------------+
@@ -94,7 +94,7 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: User Guide
+   :caption: Guía del Usuario
 
    getting-started
    user-interface
@@ -104,7 +104,7 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: API Reference
+   :caption: Referencia de la API
 
    api/overview
    api/endpoints
@@ -114,7 +114,7 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Developer Guide
+   :caption: Guía del Desarrollador
 
    development/setup
    development/frontend
@@ -125,7 +125,7 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Deployment
+   :caption: Despliegue
 
    deployment/docker
    deployment/kubernetes
@@ -135,7 +135,7 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Architecture
+   :caption: Arquitectura
 
    architecture/overview
    architecture/clean-architecture
@@ -156,7 +156,7 @@ Contents
 
 .. toctree::
    :maxdepth: 1
-   :caption: Additional Resources
+   :caption: Recursos Adicionales
 
    roadmap
    changelog

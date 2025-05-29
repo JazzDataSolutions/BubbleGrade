@@ -1,51 +1,51 @@
-Getting Started
-===============
+Primeros Pasos
+==============
 
-This guide will help you get BubbleGrade up and running quickly for development or production use.
+Esta guía te ayudará a poner en marcha BubbleGrade rápidamente para desarrollo o producción.
 
 Prerequisites
 -------------
 
 Before you begin, ensure you have the following installed:
 
-**Required Software**
+**Software Requerido**
 
-- **Docker Desktop** 4.0+ with Docker Compose
-- At least **4GB RAM** available for containers
-- **Ports 5173, 8080, 8090, 5432** available
+- **Docker Desktop** 4.0+ con Docker Compose
+- Al menos **4GB de RAM** disponibles para los contenedores
+- **Puertos 5173, 8080, 8090, 5432** libres
 
 **Optional for Development**
 
-- **Node.js** 18+ and npm (for frontend development)
-- **Python** 3.11+ (for API development)
-- **Go** 1.22+ (for OMR service development)
+- **Node.js** 18+ y npm (para desarrollo frontend)
+- **Python** 3.11+ (para desarrollo del API)
+- **Go** 1.22+ (para desarrollo del servicio OMR)
 
 Installation
 ------------
 
-Method 1: Docker Compose (Recommended)
+Método 1: Docker Compose (Recomendado)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This is the fastest way to get BubbleGrade running:
 
 .. code-block:: bash
 
-   # Clone the repository
-   git clone <repository-url>
+   # Clonar el repositorio
+   git clone <url-del-repositorio>
    cd BubbleGrade
 
-   # Start all services
+   # Iniciar todos los servicios
    docker compose -f compose.micro.yml up --build
 
    # Access the application
    open http://localhost:5173
 
-Method 2: Individual Services
+Método 2: Servicios Individuales
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For development purposes, you may want to run services individually:
 
-**Start Database First**
+**Iniciar la Base de Datos**
 
 .. code-block:: bash
 
@@ -86,17 +86,17 @@ For development purposes, you may want to run services individually:
 Verification
 ------------
 
-Once all services are running, verify the installation:
+Una vez que todos los servicios estén activos, verifica la instalación:
 
-**Check Service Health**
+**Verificar estado de los servicios**
 
 .. code-block:: bash
 
-   # API health check
-   curl http://localhost:8080/health
+  # Verificación de salud del API
+  curl http://localhost:8080/health
 
-   # OMR service health check
-   curl http://localhost:8090/health
+  # Verificación de salud del servicio OMR
+  curl http://localhost:8090/health
 
 Expected responses:
 

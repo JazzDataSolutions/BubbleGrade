@@ -1,0 +1,147 @@
+updated_action_plan:
+  version: "0.2"
+  objective: "Consolidar BubbleGrade monolito Python y entregar la primera POC end-to-end con UI editable, OCR, OMR y export."
+  phases:
+    - id: phase_1_audit
+      name: "Auditoría y baseline"
+      owner: "DevOps"
+      tasks:
+        - status: "✅"
+          id: 1.1
+          cmd: "docker compose ps"
+          expect: "api & db up, status healthy"
+        - status: "✅"
+          id: 1.2
+          cmd: "pytest -q && coverage xml"
+          expect: "coverage >= 70%"
+        - status: "✅"
+          id: 1.3
+          cmd: "curl -sf http://localhost:8080/api/health"
+          expect: "HTTP 200 {status:'ok'}"
+
+    - id: phase_2_refactor_api
+      name: "Refactor FastAPI monolito → Clean Architecture"
+      owner: "Backend"
+      exit_criteria: "pydantic models, routers, services y crud aislados, tests verdes"
+      tasks:
+        - status: "✅"
+          id: 2.1
+          desc: "Crear paquetes app/routers, app/services, app/crud"
+        - status: "✅"
+          id: 2.2
+          desc: "Mover lógica omr/ocr a app/services/omr_ocr.py"
+        - status: "✅"
+          id: 2.3
+          desc: "Añadir logging estructurado (loguru) + Prometheus fastapi-metrics"
+        - status: "✅"
+          id: 2.4
+          desc: "Evento startup precarga pytesseract"
+
+    - id: phase_3_frontend_poc
+      name: "UI/UX POC funcional"
+      owner: "Frontend"
+      tasks:
+        - status: "✅"
+          id: 3.1
+          desc: "Implementar `<UploadCard>` con Drag & Drop, Ant Design"
+        - status: "✅"
+          id: 3.2
+          desc: "Crear `<ProgressDrawer>` con WebSocket updates"
+        - status: "✅"
+          id: 3.3
+          desc: "Crear `<EditableTable>` con validación CURP (regex)"
+        - status: "❌"
+          reason: "Faltan tests jest/RTL y Playwright"
+          id: 3.4
+          desc: "Tests jest/RTL + e2e Playwright (upload-edit-export)"
+
+    - id: phase_4_data_model
+      name: "Migración BD nombre + CURP"
+      owner: "Backend"
+      tasks:
+        - status: "✅"
+          id: 4.1
+          cmd: "alembic revision --autogenerate -m 'add name and curp'"
+        - status: "✅"
+          id: 4.2
+          cmd: "alembic upgrade head"
+        - status: "✅"
+          id: 4.3
+          desc: "Agregar índice único (exam_id, curp_value)"
+
+    - id: phase_5_ci_cd
+      name: "CI/CD completo"
+      owner: "DevOps"
+      tasks:
+        - status: "✅"
+          id: 5.1
+          desc: "Añadir job frontend build + lint (eslint, prettier)"
+        - status: "✅"
+          id: 5.2
+          desc: "Publicar imagen api a GHCR, tag semver"
+        - status: "❌"
+          reason: "Pendiente configuración de secrets en GitHub Environments"
+          id: 5.3
+          desc: "Configurar secrets vía GitHub Environments"
+
+    - id: phase_6_kpis_validation
+      name: "Validación de KPIs"
+      owner: "QA"
+      metrics:
+        latency_95p: "< 60 s (30 scans)"
+        ocr_error_rate: "< 10 %"
+        cpu_max: "< 70 %"
+      tasks:
+        - status: "❌"
+          reason: "No existe herramienta de benchmarking (tools/benchmark.py)"
+          id: 6.1
+          cmd: "python tools/benchmark.py data/demo --json kpi.json"
+        - status: "❌"
+          reason: "No se ha generado reporte comparativo"
+          id: 6.2
+          desc: "Generar reporte comparativo baseline vs nuevo"
+
+  file_structure_target:
+    path: "docs/file_structure_v0.2.md"
+    content: |
+      bubblegrade/
+        docker-compose.yml
+        .env.example
+        services/
+          api/
+            Dockerfile
+            requirements.txt
+            app/
+              routers/
+              services/
+              crud/
+              db/
+              tests/
+          frontend/
+            Dockerfile
+            vite.config.ts
+            src/...
+        data/demo/
+        alembic/versions
+        README.md
+        docs/
+
+  security_hardening:
+    - "Activar CORS restrictivo: origins de frontend sólo."
+    - "Rate limit: 10 uploads/min por IP."
+    - "Tesseract execution jailed via `subprocess` with timeouts."
+
+  secrets_management:
+    - ".env.dev no se commitea; usar .env.example"
+    - "Secrets de producción en GitHub → Environments → secrets"
+
+  timeline:
+    estimate_days:
+      phase_1_audit: 0.5
+      phase_2_refactor_api: 1.5
+      phase_3_frontend_poc: 2
+      phase_4_data_model: 0.5
+      phase_5_ci_cd: 1
+      phase_6_kpis_validation: 0.5
+    buffer_days: 0.5
+    total: 6.5

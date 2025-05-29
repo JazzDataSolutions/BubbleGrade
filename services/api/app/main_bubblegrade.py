@@ -8,27 +8,31 @@ import cv2
 import numpy as np
 import httpx
 import aiofiles
-from fastapi import FastAPI, UploadFile, HTTPException, BackgroundTasks, Depends, Form
+from fastapi import FastAPI, UploadFile, HTTPException, BackgroundTasks, Depends, Form, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select, update
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 from pydantic import BaseModel
 import json
-import logging
 import os
+import sys
+from loguru import logger
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 from uuid import uuid4
 
 from .domain.entities import ProcessedScan, ScanStatus, RegionBoundingBox
-from .infrastructure.database import ProcessedScanModel, TemplateModel
+from .infrastructure.database import ProcessedScanModel
 from .infrastructure.repositories import ProcessedScanRepository
 from .services.image_processing import ImageProcessor
 from .services.microservice_client import MicroserviceClient
+from .services.ws_manager import manager
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Configure structured logging
+logger.remove()
+logger.add(sys.stdout, level=os.getenv("LOG_LEVEL", "INFO"), enqueue=True, backtrace=True, diagnose=True)
 
 app = FastAPI(title="BubbleGrade API", version="2.0.0")
 
@@ -40,11 +44,38 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+  
+# Startup event: preload Tesseract for performance
+@app.on_event("startup")
+async def preload_tesseract():
+    try:
+        import pytesseract
+        pytesseract.get_tesseract_version()
+        logger.info("Tesseract preloaded successfully")
+    except Exception as e:
+        logger.error(f"Error preloading Tesseract: {e}")
+
+# Prometheus metrics
+REQUEST_COUNT = Counter("http_requests_total", "Total HTTP Requests", ["method", "endpoint", "http_status"])
+
+@app.middleware("http")
+async def prometheus_metrics_middleware(request: Request, call_next):
+    response = await call_next(request)
+    REQUEST_COUNT.labels(method=request.method, endpoint=request.url.path, http_status=response.status_code).inc()
+    return response
+
+from .routers.metrics import router as metrics_router
+app.include_router(metrics_router)
+# WebSocket router
+from .routers.ws import router as ws_router
+app.include_router(ws_router)
 
 # Database configuration
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://omr:omr@db/omr")
 engine = create_async_engine(DATABASE_URL, echo=True)
-async_session = async_sessionmaker(engine, expire_on_commit=False)
+async_session = sessionmaker(
+    engine, class_=AsyncSession, expire_on_commit=False
+)
 
 # Service URLs
 OMR_SERVICE_URL = os.getenv("OMR_URL", "http://omr:8090")
@@ -94,9 +125,17 @@ class DocumentOrchestrator:
                 upload_time=datetime.utcnow()
             )
             await scan_repository.create(scan)
+            # Broadcast initial status
+            await manager.broadcast({
+                "type": "scan_progress",
+                "scan_id": scan_id,
+                "status": scan.status.value
+            })
 
             # Step 1: Preprocess image and detect regions
+            # Step 1: Preprocess image and detect regions
             logger.info(f"Starting image preprocessing for scan {scan_id}")
+            await manager.broadcast({"type": "scan_progress", "scan_id": scan_id, "stage": "preprocessing"})
             processed_image, regions = await self._preprocess_and_detect_regions(file_content)
             
             # Update scan with detected regions
@@ -106,13 +145,17 @@ class DocumentOrchestrator:
             # Step 2: Extract region images (for optional use)
             # region_images = await self._extract_region_images(processed_image, regions)
 
+            # Step 2: Regions detected
+            await manager.broadcast({"type": "scan_progress", "scan_id": scan_id, "stage": "regions_detected", "region_count": len(regions)})
             # Step 3: Unified OMR + OCR processing via local module
-            from .omr_ocr import grade_scan
+            from .services.omr_ocr import grade_scan
             logger.info(f"Starting unified OMR/OCR processing for scan {scan_id}")
+            await manager.broadcast({"type": "scan_progress", "scan_id": scan_id, "stage": "grading"})
             merged_result = await asyncio.get_running_loop().run_in_executor(
                 None, grade_scan, processed_image, regions
             )
 
+            merged = merged_result
             omr_result = {
                 'score': merged_result.get('score', 0),
                 'answers': merged_result.get('answers', []),
@@ -127,15 +170,20 @@ class DocumentOrchestrator:
                 'confidence': merged_result.get('curp_confidence', 0.0)
             }
 
+            # Broadcast grading results
+            await manager.broadcast({"type": "scan_progress", "scan_id": scan_id, "stage": "graded", "score": omr_result['score'], "total": omr_result['total']})
             # Step 4: Validate and update scan results
             scan = await self._finalize_scan_results(
                 scan, omr_result, nombre_result, curp_result, scan_repository
             )
 
+            await manager.broadcast({"type": "scan_progress", "scan_id": scan_id, "status": scan.status.value, "score": scan.score})
             logger.info(f"Document processing completed for scan {scan_id}")
             return scan
 
         except Exception as e:
+            # Broadcast error
+            await manager.broadcast({"type": "scan_progress", "scan_id": scan_id, "status": "ERROR", "error": str(e)})
             logger.error(f"Document processing failed for scan {scan_id}: {e}")
             # Update scan status to error
             scan.status = ScanStatus.ERROR
@@ -324,6 +372,7 @@ async def create_template(
     template: TemplateCreate
 ):
     """Create a new exam template"""
+    from .infrastructure.database import TemplateModel
     async with async_session() as session:
         tm = TemplateModel(
             name=template.name,
@@ -345,6 +394,7 @@ async def create_template(
 @app.get("/api/v1/templates", response_model=List[TemplateResponse])
 async def list_templates():
     """List all exam templates"""
+    from .infrastructure.database import TemplateModel
     async with async_session() as session:
         result = await session.execute(select(TemplateModel))
         tms = result.scalars().all()
@@ -469,16 +519,8 @@ async def update_scan(
     await repository.update(scan)
     return scan.to_dict()
 
-@app.get("/health")
-async def health_check():
-    """Comprehensive health check"""
-    # Check database connectivity
-    try:
-        async with async_session() as session:
-            await session.execute(select(1))
-        return {"status": "healthy"}
-    except Exception as e:
-        return {"status": "unhealthy", "error": str(e)}
+from .routers.health import router as health_router
+app.include_router(health_router)
 
 if __name__ == "__main__":
     import uvicorn

@@ -9,3 +9,5 @@ websockets
 pydantic
 pytesseract                # Tesseract OCR Python wrapper for text extraction
 opencv-python-headless      # OpenCV for image processing in orchestrator
+loguru                      # Structured logging
+prometheus-client           # Prometheus metrics
