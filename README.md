@@ -175,11 +175,9 @@ BubbleGrade/
 │   ├── requirements.txt                 # Dependencias Python
 │   └── Dockerfile                       # Contenedor de producción
 ```  
-```
 
----
 
-## 🔄 **Flujo de procesamiento mejorado**
+## 🔄 **Flujo de procesamiento **
 
 ### **1. 📁 Carga y validación de documentos**
 - Soporte de múltiples formatos (JPG, PNG, TIFF, PDF)
