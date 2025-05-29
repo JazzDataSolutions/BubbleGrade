@@ -1,6 +1,6 @@
-# 🫧 BubbleGrade – Procesamiento OCR+OMR de Documentos de Nueva Generación
+# 🫧 BubbleGrade – Procesamiento OCR+OMR de Documentos
 
-**BubbleGrade** es un sistema empresarial híbrido de procesamiento de **OCR** y **OMR** diseñado para la evaluación automatizada de documentos académicos. Combina reconocimiento de escritura manuscrita, procesamiento de formularios de burbujas y análisis inteligente de documentos en una arquitectura de microservicios moderna.
+**BubbleGrade** es un sistema **Reconocimiento Óptico de Marcas (OMR)**  y **Reconocimiento Óptico de Caracteres (OCR)** diseñado para la calificación automatizada de formularios de opción múltiple . Combina reconocimiento de escritura manuscrita, procesamiento de formularios de burbujas y análisis inteligente de documentos en una arquitectura de microservicios moderna.
 
 [![Licencia: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
