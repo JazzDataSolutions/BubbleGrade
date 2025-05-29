@@ -36,6 +36,7 @@ class SQLAlchemyScanRepository(ScanRepository):
         return [ScanMapper.to_entity(model) for model in scan_models]
 
     async def update(self, scan: Scan) -> Scan:
+        # Update basic and enriched fields
         await self.session.execute(
             update(ScanModel)
             .where(ScanModel.id == scan.id)
@@ -45,7 +46,11 @@ class SQLAlchemyScanRepository(ScanRepository):
                 answers=scan.answers,
                 total_questions=scan.total_questions,
                 processed_time=scan.processed_time,
-                error_message=scan.error_message
+                error_message=scan.error_message,
+                regions=getattr(scan, 'regions', None),
+                nombre=getattr(scan, 'nombre', None),
+                curp=getattr(scan, 'curp', None),
+                image_quality=getattr(scan, 'image_quality', None)
             )
         )
         await self.session.commit()
@@ -61,3 +66,6 @@ class SQLAlchemyScanRepository(ScanRepository):
             await self.session.commit()
             return True
         return False
+    
+# Alias for v2 orchestrator
+ProcessedScanRepository = SQLAlchemyScanRepository

@@ -7,3 +7,4 @@ sqlalchemy[asyncio]
 openpyxl
 websockets
 pydantic
+opencv-python-headless  # OpenCV for image processing in orchestrator

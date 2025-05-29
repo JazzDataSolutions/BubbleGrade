@@ -44,8 +44,13 @@ check_prerequisites() {
         exit 1
     fi
     
-    if ! command -v docker-compose &> /dev/null; then
-        print_error "Docker Compose is not installed. Please install Docker Compose first."
+    # Detect Docker Compose command
+    if command -v docker-compose &> /dev/null; then
+        COMPOSE_CMD="docker-compose"
+    elif docker compose version &> /dev/null 2>&1; then
+        COMPOSE_CMD="docker compose"
+    else
+        print_error "Neither 'docker-compose' nor 'docker compose' found. Please install Docker Compose."
         exit 1
     fi
     
@@ -100,23 +105,23 @@ deploy_services() {
     print_status "Building and starting BubbleGrade services..."
     
     # Build all services
-    docker-compose -f $COMPOSE_FILE --env-file $ENV_FILE build --parallel
+    $COMPOSE_CMD -f $COMPOSE_FILE --env-file $ENV_FILE build --parallel
     
     # Start database first
     print_status "Starting database..."
-    docker-compose -f $COMPOSE_FILE --env-file $ENV_FILE up -d db redis
+    $COMPOSE_CMD -f $COMPOSE_FILE --env-file $ENV_FILE up -d db redis
     
     # Wait for database to be ready
     print_status "Waiting for database to be ready..."
-    timeout 60s bash -c 'until docker-compose -f '$COMPOSE_FILE' --env-file '$ENV_FILE' exec -T db pg_isready -U bubblegrade; do sleep 2; done'
+    timeout 60s bash -c "until $COMPOSE_CMD -f $COMPOSE_FILE --env-file $ENV_FILE exec -T db pg_isready -U bubblegrade; do sleep 2; done"
     
     # Run database migrations
     print_status "Running database migrations..."
-    docker-compose -f $COMPOSE_FILE --env-file $ENV_FILE run --rm api alembic upgrade head
+    $COMPOSE_CMD -f $COMPOSE_FILE --env-file $ENV_FILE run --rm api alembic upgrade head
     
     # Start remaining services
     print_status "Starting microservices..."
-    docker-compose -f $COMPOSE_FILE --env-file $ENV_FILE up -d omr ocr
+    $COMPOSE_CMD -f $COMPOSE_FILE --env-file $ENV_FILE up -d omr ocr
     
     # Wait for microservices to be ready
     print_status "Waiting for microservices..."
@@ -125,7 +130,7 @@ deploy_services() {
     
     # Start API and frontend
     print_status "Starting API and frontend..."
-    docker-compose -f $COMPOSE_FILE --env-file $ENV_FILE up -d api frontend
+    $COMPOSE_CMD -f $COMPOSE_FILE --env-file $ENV_FILE up -d api frontend
     
     print_success "All services started successfully!"
 }
@@ -187,9 +192,9 @@ show_summary() {
     echo "   ReDoc:     http://localhost:8080/redoc"
     echo ""
     echo "🔧 Management Commands:"
-    echo "   View logs: docker-compose -f $COMPOSE_FILE logs -f"
-    echo "   Stop:      docker-compose -f $COMPOSE_FILE down"
-    echo "   Restart:   docker-compose -f $COMPOSE_FILE restart"
+    echo "   View logs: $COMPOSE_CMD -f $COMPOSE_FILE logs -f"
+    echo "   Stop:      $COMPOSE_CMD -f $COMPOSE_FILE down"
+    echo "   Restart:   $COMPOSE_CMD -f $COMPOSE_FILE restart"
     echo ""
     echo "🧪 Test the system:"
     echo "   1. Open http://localhost:5173"
@@ -217,7 +222,7 @@ main() {
 # Cleanup function
 cleanup() {
     print_status "Cleaning up on exit..."
-    docker-compose -f $COMPOSE_FILE --env-file $ENV_FILE down >/dev/null 2>&1 || true
+    $COMPOSE_CMD -f $COMPOSE_FILE --env-file $ENV_FILE down >/dev/null 2>&1 || true
 }
 
 # Trap cleanup on script exit
@@ -233,12 +238,12 @@ case "${1:-deploy}" in
         ;;
     "clean")
         print_status "Stopping and removing all containers..."
-        docker-compose -f $COMPOSE_FILE down -v --remove-orphans
+        $COMPOSE_CMD -f $COMPOSE_FILE down -v --remove-orphans
         docker system prune -f
         print_success "Cleanup completed"
         ;;
     "logs")
-        docker-compose -f $COMPOSE_FILE logs -f
+        $COMPOSE_CMD -f $COMPOSE_FILE logs -f
         ;;
     *)
         echo "Usage: $0 {deploy|test|clean|logs}"

@@ -58,10 +58,34 @@ Retrieve all scans ordered by upload time (newest first).
     "answers": ["A", "B", "C", "D", "A"],
     "total_questions": 5,
     "upload_time": "2023-12-01T10:30:00",
-    "processed_time": "2023-12-01T10:30:15"
+    "processed_time": "2023-12-01T10:30:15",
+    "regions": {
+      "omr": {"x": 124, "y": 870, "width": 1800, "height": 2000},
+      "nombre": {"x": 200, "y": 50, "width": 1800, "height": 300},
+      "curp": {"x": 200, "y": 350, "width": 1800, "height": 300}
+    },
+    "nombre": {
+      "value": "Juan Perez",
+      "confidence": 0.92,
+      "needsReview": false,
+      "correctedBy": null,
+      "correctedAt": null
+    },
+    "curp": {
+      "value": "PEPJ800101HMCRRN09",
+      "confidence": 0.98,
+      "needsReview": false,
+      "correctedBy": null,
+      "correctedAt": null
+    },
+    "image_quality": {
+      "resolution": {"width": 2480, "height": 3508},
+      "clarity": 123.45,
+      "skew": 2.5
+    }
   }
 ]
-```
+``` 
 
 ### Get Specific Scan
 
@@ -82,9 +106,33 @@ Retrieve details for a specific scan.
   "answers": ["A", "B", "C", "D", "A"],
   "total_questions": 5,
   "upload_time": "2023-12-01T10:30:00",
-  "processed_time": "2023-12-01T10:30:15"
+  "processed_time": "2023-12-01T10:30:15",
+  "regions": {
+    "omr": {"x": 124, "y": 870, "width": 1800, "height": 2000},
+    "nombre": {"x": 200, "y": 50, "width": 1800, "height": 300},
+    "curp": {"x": 200, "y": 350, "width": 1800, "height": 300}
+  },
+  "nombre": {
+    "value": "Juan Perez",
+    "confidence": 0.92,
+    "needsReview": false,
+    "correctedBy": null,
+    "correctedAt": null
+  },
+  "curp": {
+    "value": "PEPJ800101HMCRRN09",
+    "confidence": 0.98,
+    "needsReview": false,
+    "correctedBy": null,
+    "correctedAt": null
+  },
+  "image_quality": {
+    "resolution": {"width": 2480, "height": 3508},
+    "clarity": 123.45,
+    "skew": 2.5
+  }
 }
-```
+``` 
 
 ### Export Scan Results
 

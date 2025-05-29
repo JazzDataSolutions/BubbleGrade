@@ -23,6 +23,22 @@ class ScanModel(Base):
     upload_time: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     processed_time: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     error_message: Mapped[str] = mapped_column(String(500), nullable=True)
+    # Enriched processing fields
+    regions: Mapped[dict] = mapped_column(JSONB, nullable=True)
+    nombre: Mapped[dict] = mapped_column(JSONB, nullable=True)
+    curp: Mapped[dict] = mapped_column(JSONB, nullable=True)
+    image_quality: Mapped[dict] = mapped_column(JSONB, nullable=True)
+    
+# Alias for processed scans table to match orchestrator domain
+ProcessedScanModel = ScanModel
+
+class TemplateModel(Base):
+    __tablename__ = "exam_templates"
+    id: Mapped[UUID] = mapped_column(UUID, primary_key=True, default=uuid4)
+    name: Mapped[str] = mapped_column(String(255))
+    description: Mapped[str] = mapped_column(String(1000))
+    total_questions: Mapped[int] = mapped_column(Integer)
+    correct_answers: Mapped[list] = mapped_column(JSONB)
 
 
 class DatabaseConfig:

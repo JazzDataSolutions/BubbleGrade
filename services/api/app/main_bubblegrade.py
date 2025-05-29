@@ -8,19 +8,20 @@ import cv2
 import numpy as np
 import httpx
 import aiofiles
-from fastapi import FastAPI, UploadFile, HTTPException, BackgroundTasks, Depends
+from fastapi import FastAPI, UploadFile, HTTPException, BackgroundTasks, Depends, Form
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy import select, update
 from datetime import datetime
 from typing import Optional, Dict, Any, List
+from pydantic import BaseModel
 import json
 import logging
 import os
 from uuid import uuid4
 
 from .domain.entities import ProcessedScan, ScanStatus, RegionBoundingBox
-from .infrastructure.database import ProcessedScanModel
+from .infrastructure.database import ProcessedScanModel, TemplateModel
 from .infrastructure.repositories import ProcessedScanRepository
 from .services.image_processing import ImageProcessor
 from .services.microservice_client import MicroserviceClient
@@ -69,8 +70,9 @@ class DocumentOrchestrator:
         self.image_processor = image_processor
 
     async def process_document(
-        self, 
-        file_content: bytes, 
+        self,
+        scan_id: str,
+        file_content: bytes,
         filename: str,
         scan_repository: ProcessedScanRepository
     ) -> ProcessedScan:
@@ -81,7 +83,7 @@ class DocumentOrchestrator:
         3. Parallel OMR and OCR processing
         4. Results validation and storage
         """
-        scan_id = str(uuid4())
+        # scan_id provided by caller
         
         try:
             # Create initial scan record
@@ -311,10 +313,63 @@ class DocumentOrchestrator:
 orchestrator = DocumentOrchestrator()
 
 # API Endpoints
+# ----------------
+class TemplateCreate(BaseModel):
+    name: str
+    description: str
+    total_questions: int
+    correct_answers: List[str]
+
+class TemplateResponse(BaseModel):
+    id: str
+    name: str
+    description: str
+    total_questions: int
+    correct_answers: List[str]
+
+@app.post("/api/v1/templates", response_model=TemplateResponse)
+async def create_template(
+    template: TemplateCreate
+):
+    """Create a new exam template"""
+    async with async_session() as session:
+        tm = TemplateModel(
+            name=template.name,
+            description=template.description,
+            total_questions=template.total_questions,
+            correct_answers=template.correct_answers
+        )
+        session.add(tm)
+        await session.commit()
+        await session.refresh(tm)
+        return TemplateResponse(
+            id=str(tm.id),
+            name=tm.name,
+            description=tm.description,
+            total_questions=tm.total_questions,
+            correct_answers=tm.correct_answers
+        )
+
+@app.get("/api/v1/templates", response_model=List[TemplateResponse])
+async def list_templates():
+    """List all exam templates"""
+    async with async_session() as session:
+        result = await session.execute(select(TemplateModel))
+        tms = result.scalars().all()
+        return [
+            TemplateResponse(
+                id=str(tm.id),
+                name=tm.name,
+                description=tm.description,
+                total_questions=tm.total_questions,
+                correct_answers=tm.correct_answers
+            ) for tm in tms
+        ]
 @app.post("/api/v1/scans", response_model=dict)
 async def upload_scan(
     file: UploadFile,
     background_tasks: BackgroundTasks,
+    template_id: Optional[str] = Form(None),
     repository: ProcessedScanRepository = Depends(get_scan_repository)
 ):
     """Upload and process a document scan"""
@@ -326,6 +381,8 @@ async def upload_scan(
         )
     
     try:
+        # Generate scan identifier
+        scan_id = str(uuid4())
         # Read file content
         file_content = await file.read()
         
@@ -335,15 +392,16 @@ async def upload_scan(
                 detail="File too large. Maximum size is 10MB."
             )
         
-        # Start background processing
+        # Start background processing with provided scan_id
         background_tasks.add_task(
             orchestrator.process_document,
+            scan_id,
             file_content,
             file.filename or "unknown.jpg",
             repository
         )
-        
         return {
+            "id": scan_id,
             "message": "Document uploaded successfully and processing started",
             "filename": file.filename,
             "status": "PROCESSING"

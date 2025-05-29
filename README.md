@@ -131,13 +131,26 @@ open http://localhost:5173
 
 ### **Development Mode**
 ```bash
-# Start in development mode with hot reload
-docker-compose -f docker-compose.bubblegrade.yml -f docker-compose.dev.yml up
+# Desarrollo local con hot reload
+docker compose -f docker-compose.bubblegrade.yml -f compose.micro.yml up --build
 
-# Run individual services for development
-cd services/frontend && npm run dev  # Frontend development
-cd services/api && uvicorn app.main_bubblegrade:app --reload  # API development
-cd services/ocr && npm run dev  # OCR service development
+# Servicios individuales
+# Frontend
+cd services/frontend
+npm install
+npm run dev
+
+# API
+cd ../api
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main_bubblegrade:app --reload --host 0.0.0.0 --port 8080
+
+# OCR Service
+cd ../ocr
+npm install
+npm run dev
 ```
 
 ---
@@ -151,11 +164,11 @@ BubbleGrade/
 ├── 🗄️ init_bubblegrade.sql             # Database initialization
 ├── 🚀 deploy_bubblegrade.sh             # Automated deployment script
 ├── 🧪 test_bubblegrade.sh               # Comprehensive testing suite
-├── 📚 docs/                             # Enhanced documentation
-│   ├── presentation.tex                 # Business presentation
-│   ├── api-v2.md                       # API v2 documentation
-│   ├── architecture-enhanced.md         # Detailed architecture
-│   └── deployment-guide.md             # Production deployment
+├── 📚 docs/                             # Documentación
+│   ├── api.md                           # Documentación de la API
+│   ├── architecture.md                  # Arquitectura del sistema
+│   ├── deployment.md                    # Guía de despliegue
+│   └── development.md                   # Guía de desarrollo
 ├── 🎨 services/frontend/                # React 18 + TypeScript frontend
 │   ├── src/
 │   │   ├── components/OCR/              # OCR editing components
@@ -163,17 +176,17 @@ BubbleGrade/
 │   │   ├── store/index.ts               # Zustand state management
 │   │   └── types/bubblegrade.ts         # Enhanced TypeScript types
 │   ├── package_improved.json           # Enhanced dependencies
-│   └── Dockerfile.bubblegrade          # Production container
+│   └── Dockerfile                        # Production container
 ├── ⚡ services/api/                     # FastAPI orchestration service
 │   ├── app/
 │   │   ├── main_bubblegrade.py         # Enhanced main application
 │   │   ├── middleware/validation.py     # Security & validation
 │   │   └── presentation/routers_v2.py  # API v2 endpoints
 │   ├── alembic/                        # Database migrations
-│   └── Dockerfile.bubblegrade         # Production container
+│   └── Dockerfile                        # Production container
 ├── 🔍 services/omr/                    # Go OMR with region detection
 │   ├── main_enhanced.go                # Enhanced OMR processing
-│   └── Dockerfile.enhanced            # Optimized Go container
+│   └── Dockerfile                        # Container build
 └── 🔤 services/ocr/                    # Node.js OCR microservice
     ├── src/
     │   ├── server.ts                   # OCR service main

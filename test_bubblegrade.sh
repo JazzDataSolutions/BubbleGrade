@@ -15,6 +15,23 @@ NC='\033[0m'
 BASE_URL="http://localhost:8080/api/v1"
 OMR_URL="http://localhost:8090"
 OCR_URL="http://localhost:8100"
+ # Detect Docker Compose command
+ if command -v docker-compose >/dev/null 2>&1; then
+     COMPOSE_CMD="docker-compose"
+ elif docker compose version >/dev/null 2>&1; then
+     COMPOSE_CMD="docker compose"
+ else
+     echo -e "${RED}Neither 'docker-compose' nor 'docker compose' found. Please install Docker Compose.${NC}"
+     exit 1
+ fi
+ 
+ # Ensure required tools are available
+ for tool in curl jq; do
+     if ! command -v $tool >/dev/null 2>&1; then
+         echo -e "${RED}Required tool '$tool' not found. Please install it before running tests.${NC}"
+         exit 1
+     fi
+ done
 
 echo "🧪 BubbleGrade System Testing"
 echo "=========================="
@@ -182,7 +199,7 @@ rm -f test_exam.jpg test_exam.txt
 # Summary
 echo -e "\n${GREEN}🎉 Testing Complete!${NC}"
 echo "Check the logs for any errors:"
-echo "docker-compose -f docker-compose.bubblegrade.yml logs"
+echo "$COMPOSE_CMD -f docker-compose.bubblegrade.yml logs"
 echo ""
 echo "Frontend URL: http://localhost:5173"
 echo "API Docs: http://localhost:8080/docs"

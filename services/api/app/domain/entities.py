@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from uuid import UUID
 from enum import Enum
 
@@ -60,3 +60,28 @@ class WebSocketMessage:
     score: Optional[int] = None
     answers: Optional[List[str]] = None
     error: Optional[str] = None
+    
+@dataclass
+class RegionBoundingBox:
+    """Bounding box for a detected document region"""
+    x: int
+    y: int
+    width: int
+    height: int
+
+@dataclass
+class ProcessedScan:
+    """Domain entity representing a fully processed document scan"""
+    id: Any
+    filename: str
+    status: ScanStatus
+    upload_time: datetime
+    regions: Optional[Dict[str, RegionBoundingBox]] = None
+    score: Optional[int] = None
+    answers: Optional[Any] = None
+    total_questions: Optional[int] = None
+    nombre: Optional[Dict[str, Any]] = None
+    curp: Optional[Dict[str, Any]] = None
+    image_quality: Optional[Dict[str, Any]] = None
+    processed_time: Optional[datetime] = None
+    error_message: Optional[str] = None
