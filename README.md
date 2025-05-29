@@ -94,7 +94,7 @@ graph TB
 - **🩺 Formularios de atención médica**: Extracción de información de pacientes de formularios manuscritos
 - **📋 Procesamiento de encuestas**: Análisis de formularios mixtos de burbujas y texto
 
----
+
 
 ## 🚀 **Inicio rápido**
 
