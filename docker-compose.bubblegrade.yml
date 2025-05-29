@@ -1,0 +1,194 @@
+version: '3.8'
+
+services:
+  # Frontend - React with BubbleGrade features
+  frontend:
+    build: 
+      context: ./services/frontend
+      dockerfile: Dockerfile.bubblegrade
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_API_BASE=/api/v1
+      - VITE_WS_URL=ws://localhost:8080/ws
+    depends_on:
+      - api
+    networks:
+      - bubblegrade
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # FastAPI Backend - Orchestration service
+  api:
+    build: 
+      context: ./services/api
+      dockerfile: Dockerfile.bubblegrade
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://bubblegrade:bubblegrade@db:5432/bubblegrade
+      - OMR_URL=http://omr:8090
+      - OCR_URL=http://ocr:8100
+      - SECRET_KEY=bubblegrade-dev-secret-key-change-in-production
+      - LOG_LEVEL=INFO
+      - ALLOWED_ORIGINS=http://localhost:5173
+    depends_on:
+      db:
+        condition: service_healthy
+      omr:
+        condition: service_healthy
+      ocr:
+        condition: service_healthy
+    volumes:
+      - ./temp_uploads:/tmp/uploads
+      - ./logs:/app/logs
+    networks:
+      - bubblegrade
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+
+  # Go OMR Service - Enhanced with region detection
+  omr:
+    build: 
+      context: ./services/omr
+      dockerfile: Dockerfile.enhanced
+    ports:
+      - "8090:8090"
+    environment:
+      - PORT=8090
+      - OMR_THREADS=4
+      - DEBUG=false
+      - OPENCV_LOG_LEVEL=ERROR
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8090/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - bubblegrade
+
+  # Node.js OCR Service - Tesseract.js for handwriting and CURP
+  ocr:
+    build:
+      context: ./services/ocr
+      dockerfile: Dockerfile
+    ports:
+      - "8100:8100"
+    environment:
+      - PORT=8100
+      - NODE_ENV=production
+      - LOG_LEVEL=info
+      - ALLOWED_ORIGINS=http://localhost:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8100/health"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+    networks:
+      - bubblegrade
+
+  # PostgreSQL Database - Enhanced schema
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: bubblegrade
+      POSTGRES_PASSWORD: bubblegrade
+      POSTGRES_DB: bubblegrade
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=es_MX.UTF-8"
+    ports:
+      - "5433:5432"
+    volumes:
+      - bubblegrade_db_data:/var/lib/postgresql/data
+      - ./init_bubblegrade.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backups:/backups
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bubblegrade -d bubblegrade"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - bubblegrade
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - bubblegrade_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - bubblegrade
+
+  # NGINX for production load balancing (optional)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - api
+    networks:
+      - bubblegrade
+    profiles:
+      - production
+
+networks:
+  bubblegrade:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  bubblegrade_db_data:
+    driver: local
+  bubblegrade_redis_data:
+    driver: local
+
+# Development override
+---
+version: '3.8'
+
+services:
+  frontend:
+    command: npm run dev
+    volumes:
+      - ./services/frontend/src:/app/src
+      - ./services/frontend/public:/app/public
+    environment:
+      - NODE_ENV=development
+
+  api:
+    command: uvicorn app.main_bubblegrade:app --reload --host 0.0.0.0 --port 8080
+    volumes:
+      - ./services/api:/app
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+
+  omr:
+    environment:
+      - DEBUG=true
+
+  ocr:
+    command: npm run dev
+    volumes:
+      - ./services/ocr/src:/app/src
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=debug

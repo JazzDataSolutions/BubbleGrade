@@ -1,0 +1,53 @@
+{
+  "project": {
+    "name": "BubbleGrade"},
+    "rolePrompt": "Actúa como arquitecto full-stack y lead developer. Evalúa la propuesta actual de SnapGrade (FastAPI + Go OMR + Node/TS OCR + React) y genera un plan exhaustivo con código de arranque cuando corresponda. Aporta mejoras tangibles.",
+  "deliverables": [
+    "Crítica constructiva de la arquitectura y del flujo actual.",
+    "Listado de cambios front-end (React + Vite + TS): componentes, rutas, validaciones.",
+    "Cambios requeridos en el micro-servicio Go OMR: endpoints, paquetes, concurrencia, manejo de errores.",
+    "Cambios requeridos en el OCR-service (Node/TS + TensorFlow.js/Tesseract.js).",
+    "Snippet FastAPI que muestre: corte de regiones (nombre/CURP) con OpenCV, llamadas async a ocr-service, validación y persistencia en Postgres.",
+    "Esquema actualizado de BD (SQLAlchemy + Alembic) para almacenar nombre, CURP y score.",
+    "Wireframes rápidos (Mermaid o ASCII) del flujo UI.",
+    "Pasos de despliegue usando Docker Compose y comandos de prueba (curl/HTTPie).",
+    "KPIs y métricas de éxito para el sprint (latencia OCR, accuracy CURP, % edición manual).",
+    "Riesgos y mitigaciones (seguridad, rendimiento, calidad OCR).",
+    "Roadmap de siguientes sprints (constancias PDF, firma digital, CDN, autenticación)."
+  ],
+  "context": {
+    "services": {
+      "frontend": "React 18 + Vite (TS) en el contenedor :5173",
+      "api": "FastAPI 3.11 en :8080; orquesta operaciones; genera Excel",
+      "omr": "Go 1.22 + gocv en :8090; endpoint POST /grade",
+      "ocr": "Node/TS + Tesseract.js en :8100; endpoint POST /ocr",
+      "db": "PostgreSQL 16"
+    },
+    "documentLayout": {
+      "hoja": "Campo NOMBRE (línea), 18 casillas CURP, burbujas existentes"
+    },
+    "objectives": [
+      "Capturar nombre manuscrito y CURP ASCII",
+      "Permitir corrección manual vía CRUD",
+      "Exportar lista de asistencia (Excel) y constancias (PDF)"
+    ]
+  },
+  "outputExample": {
+    "format": "Markdown",
+    "sections": [
+      "## 1 · Crítica",
+      "## 2 · Cambios Front-end",
+      "## 3 · Cambios Go OMR",
+      "## 4 · Cambios OCR-service",
+      "## 5 · Snippet FastAPI",
+      "## 6 · Alembic revision",
+      "## 7 · Wireframes",
+      "## 8 · Deploy",
+      "## 9 · KPIs",
+      "## 10 · Riesgos",
+      "## 11 · Roadmap"
+    ],
+    "codeSnippets": "Incluir bloques ```python```, ```go```, ```ts``` según corresponda."
+  }
+
+}
