@@ -100,6 +100,16 @@ updated_action_plan:
           reason: "No se ha generado reporte comparativo"
           id: 6.2
           desc: "Generar reporte comparativo baseline vs nuevo"
+    - id: phase_7_documentation
+      name: "Mejora de documentación"
+      owner: "Docs"
+      tasks:
+        - status: "❌"
+          id: 7.1
+          desc: "Traducir contenido y encabezados en docs/sphinx de inglés a español"
+        - status: "❌"
+          id: 7.2
+          desc: "Actualizar diagramas Mermaid y ejemplos de código en docs/sphinx para reflejar traducción"
 
   file_structure_target:
     path: "docs/file_structure_v0.2.md"

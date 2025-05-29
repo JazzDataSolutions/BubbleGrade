@@ -2,7 +2,7 @@
 
 **BubbleGrade** es un sistema empresarial híbrido de procesamiento de **OCR** y **OMR** diseñado para la evaluación automatizada de documentos académicos. Combina reconocimiento de escritura manuscrita, procesamiento de formularios de burbujas y análisis inteligente de documentos en una arquitectura de microservicios moderna.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licencia: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
 [![React](https://img.shields.io/badge/React-18-61dafb.svg)](https://reactjs.org)
 [![Go](https://img.shields.io/badge/Go-1.22-00add8.svg)](https://golang.org)
@@ -65,10 +65,10 @@ graph TB
     style Redis fill:#dc382d
 ```
 
-### 📊 **Enhanced Service Details**
+### 📊 **Detalles mejorados del servicio**
 
-| Service | Technology Stack | Port | Purpose | Key Features |
-|---------|------------------|------|---------|--------------|
+| Servicio | Tecnología | Puerto | Propósito | Funciones clave |
+|----------|------------|--------|-----------|-----------------|
 | **Frontend** | React 18 + Vite + TypeScript + Zustand | 5173 | Interfaz de usuario | Edición en tiempo real, WebSocket, validación de CURP |
 | **API (Monolito)** | FastAPI + SQLAlchemy + AsyncPG + OpenCV + Tesseract | 8080 | Orquestación y procesamiento | Pipeline asíncrono, detección de regiones, OMR/OCR embebidos, WebSocket |
 | **Base de Datos** | PostgreSQL 16 + Esquema avanzado | 5432 | Persistencia de datos | Resultados OCR/OMR, auditoría, métricas de rendimiento |
@@ -76,50 +76,50 @@ graph TB
 
 ---
 
-## 🆕 **What's New in BubbleGrade v2**
+## 🆕 **Novedades de BubbleGrade v2**
 
-### **🔥 Major Enhancements from BubbleGrade v1**
+### **🔥 Principales mejoras respecto a BubbleGrade v1**
 
-| Feature | BubbleGrade (v1) | BubbleGrade (v2) | Improvement |
-|---------|------------------|----------------|-------------|
-| **Text Recognition** | ❌ None | ✅ Advanced OCR | +∞ |
-| **Document Types** | Bubble sheets only | Names + CURP + Bubbles | +300% |
-| **Processing Pipeline** | Sequential | Parallel OMR + OCR | +400% speed |
-| **User Interface** | Basic upload | Advanced editing suite | +500% UX |
-| **Validation** | Manual only | Automated + Manual | +200% accuracy |
-| **Architecture** | 3 services | 6 specialized services | +100% scalability |
+| Característica | BubbleGrade (v1) | BubbleGrade (v2) | Mejora |
+|---------------|------------------|----------------|-----------|
+| **Reconocimiento de texto** | ❌ Ninguno | ✅ OCR avanzado | +∞ |
+| **Tipos de documentos** | Solo hojas de burbujas | Nombres + CURP + Burbujas | +300% |
+| **Flujo de procesamiento** | Secuencial | OMR + OCR en paralelo | +400% de velocidad |
+| **Interfaz de usuario** | Carga básica | Suite de edición avanzada | +500% UX |
+| **Validación** | Solo manual | Automatizada + manual | +200% de precisión |
+| **Arquitectura** | 3 servicios | 6 servicios especializados | +100% de escalabilidad |
 
-### **🎯 Real-World Applications**
-- **🏫 Educational Institutions**: Automated exam processing with student identification
-- **🏛️ Government Agencies**: CURP validation for official documents
-- **🏢 Corporate Training**: Employee assessment with attendance tracking
-- **🩺 Healthcare Forms**: Patient information extraction from handwritten forms
-- **📋 Survey Processing**: Mixed bubble + text form analysis
+### **🎯 Aplicaciones en el mundo real**
+- **🏫 Instituciones educativas**: Procesamiento automatizado de exámenes con identificación de estudiantes
+- **🏛️ Agencias gubernamentales**: Validación de CURP para documentos oficiales
+- **🏢 Formación corporativa**: Evaluación de empleados con seguimiento de asistencia
+- **🩺 Formularios de atención médica**: Extracción de información de pacientes de formularios manuscritos
+- **📋 Procesamiento de encuestas**: Análisis de formularios mixtos de burbujas y texto
 
 ---
 
-## 🚀 **Quick Start**
+## 🚀 **Inicio rápido**
 
-### **Prerequisites**
-- **Docker** and **Docker Compose** installed
-- **4GB RAM** minimum (8GB recommended)
-- **Ports available**: 5173, 8080, 8090, 8100, 5432, 6379
+### **Requisitos previos**
+- **Docker** y **Docker Compose** instalados
+- **4 GB de RAM** mínimo (8 GB recomendado)
+- **Puertos disponibles**: 5173, 8080, 8090, 8100, 5432, 6379
 
-### **One-Command Deployment**
+### **Despliegue con un comando**
 ```bash
-# Clone and deploy BubbleGrade
+# Clonar y desplegar BubbleGrade
 git clone <repository-url>
 cd BubbleGrade
 ./deploy_bubblegrade.sh
 
-# Test the system
+# Probar el sistema
 ./test_bubblegrade.sh
 
-# Access the application
+# Acceder a la aplicación
 open http://localhost:5173
 ```
 
-### **Development Mode**
+### **Modo de desarrollo**
 ```bash
 # Desarrollo local con hot reload
 docker compose -f docker-compose.bubblegrade.yml -f compose.micro.yml up --build
@@ -137,7 +137,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main_bubblegrade:app --reload --host 0.0.0.0 --port 8080
 
-# OCR Service
+# Servicio OCR
 cd ../ocr
 npm install
 npm run dev
@@ -169,7 +169,7 @@ BubbleGrade/
 │   ├── package.json                     # Dependencias y scripts
 │   └── Dockerfile                       # Contenedor de producción
 ├── ⚡ services/api/                     # Servicio orquestador en FastAPI
-│   ├── app/                             # Implementación Clean Architecture
+│   ├── app/                             # Implementación de Arquitectura Limpia
 │   │   ├── main_bubblegrade.py          # Aplicación principal FastAPI
 │   │   ├── routers/                     # Rutas HTTP y WebSocket
 │   │   ├── services/                    # Lógica de negocio (OCR/OMR, WS)
@@ -183,64 +183,64 @@ BubbleGrade/
 
 ---
 
-## 🔄 **Enhanced Processing Pipeline**
+## 🔄 **Flujo de procesamiento mejorado**
 
-### **1. 📁 Document Upload & Validation**
-- Multi-format support (JPG, PNG, TIFF, PDF)
-- File integrity validation and duplicate detection
-- Image quality assessment and preprocessing
+### **1. 📁 Carga y validación de documentos**
+- Soporte de múltiples formatos (JPG, PNG, TIFF, PDF)
+- Validación de integridad de archivos y detección de duplicados
+- Evaluación de calidad de imagen y preprocesamiento
 
-### **2. 🔍 Intelligent Region Detection**
-- Automatic layout analysis using OpenCV
-- Dynamic region boundary detection
-- Template-based region mapping for known formats
+### **2. 🔍 Detección inteligente de regiones**
+- Análisis automático de diseño con OpenCV
+- Detección dinámica de límites de regiones
+- Mapeo de regiones basado en plantillas para formatos conocidos
 
-### **3. ⚡ Parallel Processing**
+### **3. ⚡ Procesamiento en paralelo**
 ```mermaid
 graph LR
-    A[Document] --> B[Region Detection]
-    B --> C[OMR Processing]
-    B --> D[Name OCR]
-    B --> E[CURP OCR]
-    C --> F[Results Consolidation]
+    A[Documento] --> B[Detección de regiones]
+    B --> C[Procesamiento OMR]
+    B --> D[OCR de nombre]
+    B --> E[OCR de CURP]
+    C --> F[Consolidación de resultados]
     D --> F
     E --> F
-    F --> G[Validation & Review]
+    F --> G[Validación y revisión]
 ```
 
-### **4. 🎯 Intelligent Review System**
-- Confidence-based automatic review triggers
-- CURP format validation with official algorithms
-- Manual correction interface with region highlighting
+### **4. 🎯 Sistema de revisión inteligente**
+- Disparadores de revisión automática basados en confianza
+- Validación de formato de CURP con algoritmos oficiales
+- Interfaz de corrección manual con resaltado de regiones
 
-### **5. 📊 Results & Analytics**
-- Comprehensive accuracy metrics
-- Processing time analytics
-- Quality improvement recommendations
+### **5. 📊 Resultados y análisis**
+- Métricas completas de precisión
+- Análisis de tiempo de procesamiento
+- Recomendaciones de mejora de calidad
 
 ---
 
-## 🔧 **Enhanced Configuration**
+## 🔧 **Configuración mejorada**
 
-### **Environment Variables**
+### **Variables de entorno**
 ```bash
-# Database Configuration
+# Configuración de la base de datos
 DATABASE_URL=postgresql+asyncpg://bubblegrade:secure_password@db:5432/bubblegrade
 
-# Microservice URLs
+# URLs de microservicios
 OMR_URL=http://omr:8090
 OCR_URL=http://ocr:8100
 
-# Security
+# Seguridad
 SECRET_KEY=your-secure-secret-key
 ALLOWED_ORIGINS=http://localhost:5173
 
-# Processing Configuration
+# Configuración de procesamiento
 OCR_CONFIDENCE_THRESHOLD=0.8
 CURP_VALIDATION_STRICT=true
 MAX_PROCESSING_TIME=60
 
-# Performance
+# Rendimiento
 REDIS_URL=redis://redis:6379
 CACHE_TTL=3600
 RATE_LIMIT_PER_MINUTE=30
@@ -248,14 +248,14 @@ RATE_LIMIT_PER_MINUTE=30
 
 ---
 
-## 🧪 **Advanced Testing**
+## 🧪 **Pruebas avanzadas**
 
-### **Comprehensive Test Suite**
+### **Suite de pruebas completas**
 ```bash
-# Run all tests
+# Ejecutar todas las pruebas
 ./test_bubblegrade.sh
 
-# Individual service testing
+# Pruebas de servicios individuales
 curl -X POST http://localhost:8100/ocr \
   -F "image=@test_exam.jpg" \
   -F "request={\"region\":\"nombre\",\"boundingBox\":{\"x\":50,\"y\":100,\"width\":400,\"height\":40}}"
@@ -270,30 +270,30 @@ for i in {1..10}; do
 done
 ```
 
-### **Quality Assurance Metrics**
-- **OCR Accuracy**: > 95% for printed CURP, > 85% for handwritten names
-- **Processing Speed**: < 30 seconds end-to-end per document
-- **System Reliability**: 99.5% uptime with automated health checks
-- **Scalability**: Handles 100+ concurrent uploads
+### **Métricas de aseguramiento de calidad**
+- **Precisión OCR**: > 95 % para CURP impreso, > 85 % para nombres escritos a mano
+- **Velocidad de procesamiento**: < 30 segundos de extremo a extremo por documento
+- **Confiabilidad del sistema**: 99.5 % de tiempo de actividad con comprobaciones de salud automatizadas
+- **Escalabilidad**: Maneja más de 100 cargas concurrentes
 
 ---
 
-## 📈 **Performance & Monitoring**
+## 📈 **Rendimiento y monitoreo**
 
-### **Built-in Metrics**
-- Real-time processing statistics
-- Service health monitoring
-- Performance bottleneck detection
-- User activity analytics
+### **Métricas integradas**
+- Estadísticas de procesamiento en tiempo real
+- Monitoreo de salud del servicio
+- Detección de cuellos de botella de rendimiento
+- Análisis de actividad de usuarios
 
-### **Scaling Strategy**
+### **Estrategia de escalado**
 ```yaml
 # Kubernetes-ready configuration
 replicas:
   frontend: 2
   api: 3
-  omr: 4      # CPU-intensive
-  ocr: 5      # Memory-intensive
+  omr: 4      # CPU intensivo
+  ocr: 5      # Intensivo en memoria
   
 resources:
   api: { memory: "1Gi", cpu: "500m" }
@@ -303,71 +303,71 @@ resources:
 
 ---
 
-## 🔒 **Security & Compliance**
+## 🔒 **Seguridad y cumplimiento**
 
-### **Built-in Security Features**
-- **Rate Limiting**: Prevent abuse with intelligent throttling
-- **File Validation**: Secure upload with format verification
-- **Input Sanitization**: Prevent injection attacks
-- **Audit Logging**: Complete action tracking
-- **Data Encryption**: At-rest and in-transit protection
+### **Funciones de seguridad integradas**
+- **Limitación de tasa**: Prevención de abusos con limitación inteligente
+- **Validación de archivos**: Carga segura con verificación de formato
+- **Saneamiento de entradas**: Prevención de ataques de inyección
+- **Registro de auditoría**: Seguimiento completo de acciones
+- **Cifrado de datos**: Protección en reposo y en tránsito
 
-### **Mexican Compliance**
-- **CURP Validation**: Official algorithm implementation
-- **Data Privacy**: GDPR and Mexican data protection compliance
-- **Secure Processing**: No data retention beyond processing needs
-
----
-
-## 🤝 **Enterprise Support**
-
-### **Professional Services by JazzDataSolutions**
-- **🔧 Custom Implementation**: Tailored to your institution's needs
-- **📊 Analytics Integration**: Connect with existing systems
-- **🎓 Training & Support**: Comprehensive user training programs
-- **⚡ Performance Optimization**: Scale to your requirements
-- **🔒 Security Consulting**: Enterprise-grade security implementation
-
-### **Contact Information**
-- **Website**: [jazzdatasolutions.com](https://jazzdatasolutions.com)
-- **Email**: contact@jazzdatasolutions.com
-- **Support**: support@jazzdatasolutions.com
-- **Sales**: sales@jazzdatasolutions.com
+### **Cumplimiento mexicano**
+- **Validación de CURP**: Implementación de algoritmo oficial
+- **Privacidad de datos**: Cumplimiento con GDPR y protección de datos mexicana
+- **Procesamiento seguro**: No retención de datos más allá de lo necesario
 
 ---
 
-## 📄 **License & Attribution**
+## 🤝 **Soporte empresarial**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### **Servicios profesionales de JazzDataSolutions**
+- **🔧 Implementación personalizada**: Adaptada a las necesidades de su institución
+- **📊 Integración de análisis**: Conexión con sistemas existentes
+- **🎓 Capacitación y soporte**: Programas integrales de formación de usuarios
+- **⚡ Optimización de rendimiento**: Escala según sus requisitos
+- **🔒 Consultoría de seguridad**: Implementación de seguridad a nivel empresarial
 
-**Built with ❤️ by JazzDataSolutions**
-
-*Transforming document processing through intelligent automation*
-
----
-
-## 🎯 **Next Steps & Roadmap**
-
-### **Immediate (Sprint 1 Complete)**
-- ✅ Hybrid OCR + OMR processing
-- ✅ Real-time manual correction interface
-- ✅ Enhanced microservices architecture
-- ✅ Production-ready deployment
-
-### **Short Term (Q2 2024)**
-- 📄 PDF constancia generation with digital signatures
-- 🔗 CDN integration for performance optimization
-- 🔐 Enterprise authentication and authorization
-- 📊 Advanced analytics dashboard
-
-### **Long Term (Q3-Q4 2024)**
-- 🤖 Machine learning models for improved accuracy
-- 📱 Mobile application for document capture
-- ☸️ Kubernetes orchestration and auto-scaling
-- 🌐 Multi-language support and internationalization
+### **Información de contacto**
+- **Sitio web**: [jazzdatasolutions.com](https://jazzdatasolutions.com)
+- **Correo electrónico**: contact@jazzdatasolutions.com
+- **Soporte**: support@jazzdatasolutions.com
+- **Ventas**: sales@jazzdatasolutions.com
 
 ---
 
-**Ready to revolutionize your document processing?**
+## 📄 **Licencia y atribución**
+
+Este proyecto está licenciado bajo la Licencia MIT. Consulte el archivo [LICENSE](LICENSE) para más detalles.
+
+**Desarrollado con ❤️ por JazzDataSolutions**
+
+*Transformando el procesamiento de documentos mediante automatización inteligente*
+
+---
+
+## 🎯 **Próximos pasos y hoja de ruta**
+
+### **Inmediato (Sprint 1 completo)**
+- ✅ Procesamiento híbrido OCR + OMR
+- ✅ Interfaz de corrección manual en tiempo real
+- ✅ Arquitectura de microservicios mejorada
+- ✅ Despliegue listo para producción
+
+### **Corto plazo (Q2 2024)**
+- 📄 Generación de constancias en PDF con firmas digitales
+- 🔗 Integración de CDN para optimizar el rendimiento
+- 🔐 Autenticación y autorización empresarial
+- 📊 Panel avanzado de análisis
+
+### **Largo plazo (Q3-Q4 2024)**
+- 🤖 Modelos de aprendizaje automático para mayor precisión
+- 📱 Aplicación móvil para captura de documentos
+- ☸️ Orquestación con Kubernetes y autoescalado
+- 🌐 Soporte multilingüe e internacionalización
+
+---
+
+**¿Listo para revolucionar el procesamiento de sus documentos?**
 
 **[Get Started Today](./deploy_bubblegrade.sh) | [View Demo](http://localhost:5173) | [Contact Sales](mailto:sales@jazzdatasolutions.com)**
