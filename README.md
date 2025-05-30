@@ -11,7 +11,7 @@
 
 ---
 
-## 🚀 **Funcionalidades Revolucionarias**
+## 🚀 **Funcionalidades **
 
 ### 🎯 **Capacidades Principales**
 - **📝 Reconocimiento de Escritura a Mano** con OCR avanzado (Tesseract)
