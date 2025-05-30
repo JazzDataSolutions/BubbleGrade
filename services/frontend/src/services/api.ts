@@ -1,4 +1,4 @@
-import { Scan, ExamTemplate, User } from '../types'
+import type { Scan, ExamTemplate, User } from '../types'
 
 interface ApiConfig {
   baseURL: string
