@@ -9,10 +9,6 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com)
 [![Node.js](https://img.shields.io/badge/Node.js-18-339933.svg)](https://nodejs.org)
 
----
-
-## 🚀 **Funcionalidades **
-
 ### 🎯 **Capacidades Principales**
 - **📝 Reconocimiento de Escritura a Mano** con OCR avanzado (Tesseract)
 - **🆔 Extracción y Validación de CURP** con verificación de formato oficial
