@@ -110,6 +110,34 @@ updated_action_plan:
         - status: "❌"
           id: 7.2
           desc: "Actualizar diagramas Mermaid y ejemplos de código en docs/sphinx para reflejar traducción"
+    - id: phase_8_mejoras_adicionales
+      name: "Mejoras adicionales"
+      owner: "Team"
+      tasks:
+        - status: "❌"
+          id: 8.1
+          desc: "Actualizar package-lock.json para sincronizar dependencias"
+          cmd: "cd services/frontend && npm install --legacy-peer-deps && git add package-lock.json"
+        - status: "❌"
+          id: 8.2
+          desc: "Unificar docker-compose.bubblegrade.yml y compose.micro.yml en un único docker-compose.yml con perfiles dev/prod"
+        - status: "❌"
+          id: 8.3
+          desc: "Implementar endpoint /health y healthcheck en el contenedor de desarrollo del frontend"
+        - status: "❌"
+          id: 8.4
+          desc: "Instalar tipados faltantes y ajustar tsconfig en frontend"
+          cmd: "cd services/frontend && npm install --save-dev @types/react-router-dom @types/react-dropzone zustand @types/zustand"
+        - status: "❌"
+          id: 8.5
+          desc: "Agregar Makefile para automatizar comandos de desarrollo"
+          cmd: "touch Makefile && echo 'dev: docker compose -f docker-compose.dev.yml up --build' >> Makefile"
+        - status: "❌"
+          id: 8.6
+          desc: "Integrar pruebas de frontend (jest y playwright) en la CI/CD"
+        - status: "❌"
+          id: 8.7
+          desc: "Crear .env.example con todas las variables de entorno necesarias"
 
   file_structure_target:
     path: "docs/file_structure_v0.2.md"

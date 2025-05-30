@@ -1,0 +1,91 @@
+version: '3.8'
+
+x-api-common: &api-common
+  build:
+    context: ./services/api
+  environment:
+    - DATABASE_URL=postgresql+asyncpg://bubblegrade:bubblegrade_secure_password_2024@db:5432/bubblegrade
+    - SECRET_KEY=${SECRET_KEY:-prod-secret-key}
+    - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:5173}
+  depends_on:
+    - db
+    - redis
+  ports:
+    - "8080:8080"
+  healthcheck:
+    test: ["CMD","curl","-f","http://localhost:8080/health"]
+    interval: 30s
+    timeout: 10s
+    retries: 5
+
+x-frontend-common: &frontend-common
+  build:
+    context: ./services/frontend
+    dockerfile: Dockerfile
+  depends_on:
+    - api
+  ports:
+    - "5173:80"
+  healthcheck:
+    test: ["CMD","curl","-f","http://localhost:80/health"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=bubblegrade
+      - POSTGRES_PASSWORD=bubblegrade_secure_password_2024
+      - POSTGRES_DB=bubblegrade
+    ports:
+      - "5433:5432"
+    volumes:
+      - bubblegrade_db_data:/var/lib/postgresql/data
+      - ./init_bubblegrade.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - bubblegrade_redis_data:/data
+
+  api:
+    <<: *api-common
+    command: uvicorn app.main_bubblegrade:app --host 0.0.0.0 --port 8080
+
+  api-dev:
+    <<: *api-common
+    profiles:
+      - dev
+    volumes:
+      - ./services/api:/app
+    command: sh -c "pip install python-multipart && uvicorn app.main_bubblegrade:app --reload --host 0.0.0.0 --port 8080"
+
+  frontend:
+    <<: *frontend-common
+    environment:
+      - VITE_API_BASE=/api/v1
+      - VITE_WS_URL=ws://localhost:8080/ws
+
+  frontend-dev:
+    image: node:18-alpine
+    profiles:
+      - dev
+    working_dir: /app
+    volumes:
+      - ./services/frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE=http://localhost:8080/api/v1
+      - VITE_WS_URL=ws://localhost:8080/ws
+      - NODE_ENV=development
+    command: sh -c "npm install --legacy-peer-deps && npm run dev -- --host 0.0.0.0"
+
+volumes:
+  bubblegrade_db_data:
+  bubblegrade_redis_data:
