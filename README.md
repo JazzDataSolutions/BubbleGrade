@@ -1,6 +1,6 @@
-# 🫧 BubbleGrade – Procesamiento OCR+OMR de Documentos de Nueva Generación
+# 🫧 BubbleGrade – Procesamiento OCR+OMR de Documentos
 
-**BubbleGrade** es un sistema empresarial híbrido de procesamiento de **OCR** y **OMR** diseñado para la evaluación automatizada de documentos académicos. Combina reconocimiento de escritura manuscrita, procesamiento de formularios de burbujas y análisis inteligente de documentos en una arquitectura de microservicios moderna.
+**BubbleGrade** es un sistema **Reconocimiento Óptico de Marcas (OMR)**  y **Reconocimiento Óptico de Caracteres (OCR)** diseñado para la calificación automatizada de formularios de opción múltiple . Combina reconocimiento de escritura manuscrita, procesamiento de formularios de burbujas y análisis inteligente de documentos en una arquitectura de microservicios moderna.
 
 [![Licencia: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
@@ -11,7 +11,7 @@
 
 ---
 
-## 🚀 **Funcionalidades Revolucionarias**
+## 🚀 **Funcionalidades **
 
 ### 🎯 **Capacidades Principales**
 - **📝 Reconocimiento de Escritura a Mano** con OCR avanzado (Tesseract)
@@ -74,8 +74,6 @@ graph TB
 | **Base de Datos** | PostgreSQL 16 + Esquema avanzado | 5432 | Persistencia de datos | Resultados OCR/OMR, auditoría, métricas de rendimiento |
 | **Caché** | Redis 7 + Gestión de sesiones | 6379 | Rendimiento | Caché de resultados, almacenamiento de sesiones, rate limiting |
 
----
-
 ## 🆕 **Novedades de BubbleGrade v2**
 
 ### **🔥 Principales mejoras respecto a BubbleGrade v1**
@@ -96,7 +94,7 @@ graph TB
 - **🩺 Formularios de atención médica**: Extracción de información de pacientes de formularios manuscritos
 - **📋 Procesamiento de encuestas**: Análisis de formularios mixtos de burbujas y texto
 
----
+
 
 ## 🚀 **Inicio rápido**
 
@@ -143,9 +141,7 @@ npm install
 npm run dev
 ```
 
----
-
-## 📂 **Estructura Mejorada del Proyecto**
+## 📂 **Estructura del Proyecto**
 
 ```
 BubbleGrade/
@@ -179,11 +175,9 @@ BubbleGrade/
 │   ├── requirements.txt                 # Dependencias Python
 │   └── Dockerfile                       # Contenedor de producción
 ```  
-```
 
----
 
-## 🔄 **Flujo de procesamiento mejorado**
+## 🔄 **Flujo de procesamiento **
 
 ### **1. 📁 Carga y validación de documentos**
 - Soporte de múltiples formatos (JPG, PNG, TIFF, PDF)
